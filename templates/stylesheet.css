@@ -1,0 +1,102 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: "Franklin Gothic Medium", Helvetica, Verdana, sans-serif;
+}
+
+/*@font-face {
+	font-family: 'Futura Std';
+	src: url('FuturaStd-HeavyOblique.eot');
+	src: url('FuturaStd-HeavyOblique.eot?#iefix') format('embedded-opentype'),
+		url('FuturaStd-HeavyOblique.woff') format('woff'),
+		url('FuturaStd-HeavyOblique.ttf') format('truetype'),
+		url('FuturaStd-HeavyOblique.svg') format('svg');
+	font-weight: 900;
+	font-style: italic;
+}*/
+
+
+.site, body {
+	width: 100vw;
+	overflow-x: hidden;
+}
+
+.pic {
+	height: 100vh;
+	width: 100%;
+	background: url(bb.jpg) no-repeat fixed;
+	background-size: cover;
+}
+
+.navibar {
+	z-index: 2;
+	background: #03001e; /* fallback for old browsers */
+  	background: -webkit-linear-gradient(to right, #03001e, #7303c0, #ec38bc, #fdeff9); /* Chrome 10-25, Safari 5.1-6 */
+  	background: linear-gradient(to right, #03001e, #7303c0, #ec38bc, #fdeff9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	position: fixed;
+	width: 100%;
+	padding: 10px;
+	border-bottom: 2px solid #fffff0;
+	-webkit-box-shadow: 9px 9px 8px 1px rgba(0,0,0,0.40);
+	-moz-box-shadow: 9px 9px 8px 1px rgba(0,0,0,0.40);
+	box-shadow: 9px 9px 8px 1px rgba(0,0,0,0.40);
+
+}
+
+.navitem {
+	text-decoration: none;
+	list-style-type: none;
+	display: inline-block;
+	font-size: 36px;
+	color: 	#D3D3D3;
+}
+
+#login {
+	margin-left: auto;
+	color: red     ;
+}
+
+.spacing {
+	margin-left: 40px;
+}
+
+.top {
+	padding-top: 100px;
+	margin-left: 100px;
+	display: inline-block;
+}
+
+.intro {
+	font-size: 16em;
+	color: 	#D3D3D3;
+	font-style: italic;
+	display: inline-block;
+}
+
+.page {
+	height: 100%;
+	width: 100vw;
+	background-color: #fffff0;
+	overflow: hidden;
+	-webkit-box-shadow: -1px -9px 8px 5px rgba(0,0,0,0.25);
+	-moz-box-shadow: -1px -9px 8px 5px rgba(0,0,0,0.25);
+	box-shadow: -1px -9px 8px 5px rgba(0,0,0,0.25);
+
+}
+
+
+.heading {
+	font-size: 128px;
+	color: #000000;
+	text-align: center;
+	padding-top: 100px;
+	margin-bottom: 30px;
+}
+
+.text {
+	font-size: 36px;
+	color: #000000;
+	text-align: center;
+	margin-bottom: 40px;
+	padding: 30px;
+}
