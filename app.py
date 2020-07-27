@@ -3,29 +3,19 @@
 from flask import Flask
 from flask import render_template
 from flask import request
-# from flask_pymongo import PyMongo
-
+import os
+from flask_pymongo import PyMongo
+user = os.environ["user"]
+pw = os.environ["pw"]
 
 # -- Initialization section --
 app = Flask(__name__)
-
-events = [
-        {"event":"First Day of Classes", "date":"2019-08-21"},
-        {"event":"Winter Break", "date":"2019-12-20"},
-        {"event":"Finals Begin", "date":"2019-12-01"}
-    ]
-
-# name of database
-# app.config['MONGO_DBNAME'] = 'database-name'
-
-# URI of database
-# app.config['MONGO_URI'] = 'mongo-uri'
-
-# mongo = PyMongo(app)
+client = MongoClient(
+    f"mongodb+srv://{user}:{pw}@stockler.7bkls.mongodb.net/BKA?retryWrites=true&w=majority")
+db = client['BKA']
 
 # -- Routes section --
 # INDEX
-
 @app.route('/')
 @app.route('/index')
 
@@ -44,3 +34,7 @@ def add():
 
     # return a message to the user
     return ""
+
+if __name__  == "__main__":
+    app.debug = True
+    app.run()
