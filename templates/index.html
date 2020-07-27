@@ -13,18 +13,78 @@
     <div class="pic">
       <div class="navibar">
         <ul class="nav">
-          <li><a name="home" class="navitem" style="color:  #D3D3D3;" href="#about">Home</a></li>
-          <li class="spacing"><a class="navitem" style="color:  #D3D3D3;" name="about" href="#about">About Us</a></li>
-          <li class="spacing"><a class="navitem" style="color:  #D3D3D3;" name="tool" href="#about">Analysis Tool</a></li>
-          <li id="login"><a class="navitem" href="login" style="color: darkslategrey;">Sign Up or Login</a></li>
+          <li><a name="home" class="navitem" style="color:  #D3D3D3;" href="index.html">Home</a></li>
+          <li class="spacing"><a class="navitem" style="color:  #D3D3D3;" name="about" href="#">Analysis Tool</a></li>
+          <li class="spacing"><a class="navitem" style="color:  #D3D3D3;" name="tool" href="#">About Us</a></li>
+          <li id="login"><a class="navitem" href="#loginpage" style="color: darkslategrey;">Sign Up or Login</a></li>
         </ul> 
       </div>
 
-        <div class="d-flex justify-content-between"><p style="margin-top: 100px;" class="intro">Brooklyn</p></div>
-        <div class="d-flex justify-content-between" style="padding-left: 7%;"><p class="intro">Analysis</p></div>
+        <div class="d-flex justify-content-center"><p style="margin-top: 10%;" class="intro">Brooklyn</p></div>
+        <div class="d-flex justify-content-center" style="padding-left: 7%;"><p class="intro">Analysis</p></div>
     </div>
-    <div class="page" id="about"> 
-      
+    <div class="page text-center" id="loginpage"> 
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Click to Login
+              </button>
+            </h2>
+          </div>
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <form class="form-signin" style="width: 400px;  margin: auto;">
+                <img class="mb-4" src="bicon.png" alt="" width="150" height="150">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                <div class="checkbox mb-3">
+                  <label>
+                  <input type="checkbox" value="remember-me"> Remember me
+                  </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+              </form>            
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <h2 class="mb-0">
+              <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Click to Sign Up
+              </button>
+            </h2>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+              <form class="form-signin" style="width: 400px; margin: auto;">
+                <img class="mb-4" src="bicon.png" alt="" width="150" height="150">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                <div class="checkbox mb-3">
+                  <label>
+                  <input type="checkbox" value="remember-me"> Remember me
+                  </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">© 2020</p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- {{% block body %}}
+      {{% endblock %}} -->
     </div>
   </div>
 </body>
