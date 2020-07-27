@@ -29,7 +29,7 @@ html {
 .pic {
 	height: 100vh;
 	width: 100%;
-	background: url(bb.jpg) no-repeat fixed;
+	background: url(/static/imgs/bb.jpg) no-repeat fixed;
 	background-size: cover;
 }
 
