@@ -4,6 +4,11 @@
 	font-family: "Franklin Gothic Medium", Helvetica, Verdana, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+
 /*@font-face {
 	font-family: 'Futura Std';
 	src: url('FuturaStd-HeavyOblique.eot');
@@ -67,10 +72,12 @@
 }
 
 .intro {
-	font-size: 16em;
+	-webkit-text-stroke: 1px black;
+	font-size: 10em;
 	color: 	#D3D3D3;
 	font-style: italic;
 	display: inline-block;
+	text-align: center;
 }
 
 .page {
