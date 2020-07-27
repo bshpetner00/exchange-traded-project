@@ -4,9 +4,8 @@ from flask import Flask
 from flask import render_template
 from flask import request
 import os
-from flask_pymongo import PyMongo
-user = os.environ["user"]
-pw = os.environ["pw"]
+from flask_pymongo import MongoClient
+
 
 # -- Initialization section --
 app = Flask(__name__)
@@ -20,7 +19,7 @@ db = client['BKA']
 @app.route('/index')
 
 def index():
-    return render_template('index.html', events = events)
+    return render_template('index.html')
 
 
 # CONNECT TO DB, ADD DATA
