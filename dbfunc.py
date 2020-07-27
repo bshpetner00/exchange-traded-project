@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 import os
 from decouple import config
+import bcrypt
 
 username = config('user')
 password = config('pass')
@@ -12,12 +13,14 @@ db = client['BKA']
 
 def authUser(user,pw):
     users = db.users
-    userList = list(users.find({'user':user,'pw':pw}))
-    print(userList)
+    userList = list(users.find({'user':user}))
+    # print(userList)
     if userList == []:
-        return "stonk"
+        return "wrong user"
+    elif bcrypt.checkpw(pw.encode("utf-8"), userList[0]['pw']):
+        return "success"
     else:
-        return "successful stonk"
+        return "wrong pw"
 
 def createUser(user,pw):
     users = db.users
@@ -27,11 +30,12 @@ def createUser(user,pw):
     if userList != []:
         return "Name already taken"
     else:
-        users.insert_one({"user":user,"pw":pw})
-        return "Make user"
+        hashed = bcrypt.hashpw(pw.encode("utf-8"), bcrypt.gensalt(14))
+        users.insert_one({"user":user,"pw":hashed})
+        return "Made user"
 
 # print(username)
 # print(password)
-# print (createUser("scrappy","doo"))
-print (authUser("scrappy","doo"))
-print (authUser("sc","doo"))
+print (createUser("scray","doasdaso"))
+print (authUser("scray","doasdaso"))
+print (authUser("scray","dasdasdas"))
