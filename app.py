@@ -4,24 +4,17 @@ from flask import Flask
 from flask import render_template
 from flask import request
 import os
-from flask_pymongo import MongoClient
 from dbfunc import *
 
 
 # -- Initialization section --
 app = Flask(__name__)
-client = MongoClient(
-    f"mongodb+srv://{user}:{pw}@stockler.7bkls.mongodb.net/BKA?retryWrites=true&w=majority")
-db = client['BKA']
 
 # -- Routes section --
 # INDEX
 @app.route('/')
-@app.route('/index')
-
 def index():
-    if "username" in session:
-        
+    # if "username" in session:
     return render_template('index.html')
 
 
@@ -36,20 +29,24 @@ def add():
     return ""
 
 @app.route('/comparison')
-def comparison:
+def comparison():
     return ""
 
 @app.route('/login',methods=["GET","POST"])
 def login():
-    user = request.form["user"]
-    password = request.form["pass"]
-    message = "Password or username incorrect"
-    #Auth User
-    if authUser(user,password) == "successful stonk":
-        message = "Succesful login"
-        flash(message)
-        return "homepage"
-    return "retry page"
+    if request.method == "POST":
+        user = request.form["user"]
+        password = request.form["pass"]
+        message = "Password or username incorrect"
+        #Auth User
+        rauth = authUser(user,password)
+        if rauth == "success":
+            message = "Succesful login"
+            flash(message)
+            return "homepage"
+        elif rauth == "wrong pw":
+            flash("Wrong Password")
+    return render_template("login.html")
 
 
 @app.route('/register',methods=["GET","POST"])
@@ -72,7 +69,7 @@ def register():
 def admin():
     #check usernames with sessin to see if you're allowed to be this route
     #If not redirect to the regular homepage
-
+    return
 
 @app.route('/getetf/<ticker>/',methods=["POST","GET"])
 def getetf(ticker):

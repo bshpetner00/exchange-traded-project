@@ -1,62 +1,63 @@
-{{% extends "index.html" %}}
+{% extends "index.html" %}
 
-<div class="accordion" id="accordionExample">
-        <div class="card">
-          <div class="card-header" id="headingOne">
-            <h2 class="mb-0">
-              <button class="btn btn-info" style="background-color: #3c1f41; border: 1px solid black;" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Click to Login
-              </button>
-            </h2>
-          </div>
-          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-            
-            <div class="card-body">
-              <form class="form-signin" style="width: 400px;  margin: auto;">
-                <img class="mb-4" src="bicon.png" alt="" width="150" height="150">
-                <h1 class="h3 mb-3 font-weight-normal">Log In</h1>
-                <label for="inputUsername" class="sr-only">Username</label>
-                <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="">
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-                <div class="checkbox mb-3">
-                  <label>
-                  <input type="checkbox" value="remember-me"> Remember me
-                  </label>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" style="background-color: #3c1f41; border: 1px solid black;" type="submit">Log in</button>
-                <p class="mt-5 mb-3 text-muted">© 2020</p>
-              </form>            
+{% block body %}
+<div class="page text-center" id="loginpage">
+  <div class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Click to Login
+          </button>
+        </h2>
+      </div>
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+          <form class="form-signin" style="width: 400px;  margin: auto;">
+            <img class="mb-4" src="static/imgs/bicon.png" alt="" width="150" height="150">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+            <div class="checkbox mb-3">
+              <label>
+              <input type="checkbox" value="remember-me"> Remember me
+              </label>
             </div>
-          </div>
-
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+          </form>
         </div>
-        <div class="card">
-          <div class="card-header" id="headingTwo">
-            <h2 class="mb-0">
-              <button class="btn btn-info collapsed" style="background-color: #3c1f41; border: 1px solid black;" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Click to Sign Up
-              </button>
-            </h2>
-          </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-            <div class="card-body">
-              <form class="form-signin" style="width: 400px; margin: auto;">
-                <img class="mb-4" src="bicon.png" alt="" width="150" height="150">
-                <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
-                <label for="signUpUser" class="sr-only">Username</label>
-                <input type="text" id="signUpUser" class="form-control" placeholder="Username" required="" autofocus="">
-                <label for="signUpPassword" class="sr-only">Password</label>
-                <input type="password" id="signUpPassword" class="form-control" placeholder="Password" required="">
-                <div class="checkbox mb-3">
-                  <label>
-                  <input type="checkbox" value="remember-me"> Remember me
-                  </label>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" style="background-color: #3c1f41; border: 1px solid black;" type="submit">Sign in</button>
-                <p class="mt-5 mb-3 text-muted">© 2020</p>
-              </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingTwo">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Click to Sign Up
+          </button>
+        </h2>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div class="card-body">
+          <form class="form-signin" style="width: 400px; margin: auto;">
+            <img class="mb-4" src="static/imgs/bicon.png" alt="" width="150" height="150">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+            <div class="checkbox mb-3">
+              <label>
+              <input type="checkbox" value="remember-me"> Remember me
+              </label>
             </div>
-          </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">© 2020</p>
+          </form>
         </div>
-</div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}

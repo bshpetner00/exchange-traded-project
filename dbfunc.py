@@ -36,6 +36,6 @@ def createUser(user,pw):
 
 # print(username)
 # print(password)
-print (createUser("scray","doasdaso"))
-print (authUser("scray","doasdaso"))
-print (authUser("scray","dasdasdas"))
+# print (createUser("scray","doasdaso"))
+# print (authUser("scray","doasdaso"))
+# print (authUser("scray","dasdasdas"))
