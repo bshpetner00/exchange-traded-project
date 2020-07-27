@@ -25,7 +25,6 @@ def index():
 # CONNECT TO DB, ADD DATA
 
 @app.route('/add')
-
 def add():
     # connect to the database
 
@@ -33,6 +32,16 @@ def add():
 
     # return a message to the user
     return ""
+
+@app.route('/comparison')
+def comparison:
+    return ""
+
+@app.route('/login',methods=["GET","POST"])
+def login():
+    user = request.form["user"]
+    pass = request.form["pass"]
+
 
 if __name__  == "__main__":
     app.debug = True
