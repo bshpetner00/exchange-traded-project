@@ -30,7 +30,7 @@ def add():
 
 @app.route('/comparison')
 def comparison():
-    ETFDict = getETFDict("SOXX")
+    ETFDict = getETFDict("PSMB")
     return render_template("compTool.html", ETFDict = ETFDict)
 
 @app.route('/login',methods=["GET","POST"])

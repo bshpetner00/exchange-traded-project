@@ -41,8 +41,10 @@ def createUser(user,pw):
 
 def cacheTiingoData(ticker):
     # ETFDict = {}
+    ticker = ticker.strip()
     # fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # x = 0
+    # print(ticker)
     config = {}
 
     # To reuse the same HTTP Session across API calls (and have better performance), include a session key.
@@ -50,22 +52,10 @@ def cacheTiingoData(ticker):
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "3d62f451a1a8e486b5a6d1b11df2692154baf9d8"
+    config['api_key'] = "87dfccc8b40644702920b616d692864f1a82e1f8"
 
     client = TiingoClient(config)
-
-    # print(beeper)
-    # tickerList = []
-    # for holding in fromdb['Holdings']:
-    #     t = holding['Ticker']
-    #     if t != '':
-    #         tickerList.append(holding['Ticker'])
     checkIfWorked = False
-    # try:
-    #     beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
-    #     checkIfWorked = True
-    # except:
-    #     checkIfWorked = False
     try:
         beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
         checkIfWorked = True
@@ -78,6 +68,8 @@ def cacheTiingoData(ticker):
         filePath = ''
         if ticker == 'PRN':
             filePath = f'static/csv/c{ticker}.csv'
+        elif "OMFL" in ticker:
+            filePath = f'static/csv/OMFL.csv'
         else:
             filePath = f'static/csv/{ticker}.csv'
         with open(filePath, 'w', newline='') as csvfile:
@@ -93,34 +85,51 @@ def cacheTiingoData(ticker):
 
 def getETFDict(ticker):
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
+    # print(len(ticker))
+    ticker = ticker.strip()
+    print(len(ticker))
+    printer.pprint(fromdb)
     excludedWeight = 0
     ETFDict = {"Ticker":ticker}
     holdingsList = {}
+    includedWeight = 0
+    numberPoints = 0
     for holding in fromdb['Holdings']:
+        hTicker = holding['Ticker'].strip()
         filePath = ""
         if ticker == "PRN":
-            filePath = f"static/csv/c{holding['Ticker']}.csv"
+            filePath = f"static/csv/c{hTicker}.csv"
+        elif "OMFL" in ticker:
+            filePath = f'static/csv/OMFL.csv'
         else:
-            filePath = f"static/csv/{holding['Ticker']}.csv"
+            filePath = f"static/csv/{hTicker}.csv"
         if not path.exists(filePath):
-            succeeble = cacheTiingoData(holding['Ticker'])
+            succeeble = cacheTiingoData(hTicker)
             if not succeeble:
                 excludedWeight+=holding['Weight']
             else:
+                includedWeight+=holding['Weight']
                 holdingsList[holding['Ticker']] = {}
                 holdingsList[holding['Ticker']]['Weight'] = holding['Weight']
                 with open(filePath, newline='') as holdingFile:
                     readler = csv.reader(holdingFile)
                     holdingsList[holding['Ticker']]['data'] = list(readler)
+                    if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
+                        numberPoints = len(holdingsList[holding['Ticker']]['data'])
         else:
+            includedWeight+=holding['Weight']
             holdingsList[holding['Ticker']] = {}
             holdingsList[holding['Ticker']]['Weight'] = holding['Weight']
             with open(filePath, newline='') as holdingFile:
                 readler = csv.reader(holdingFile)
                 holdingsList[holding['Ticker']]['data'] = list(readler)
+                if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
+                    numberPoints = len(holdingsList[holding['Ticker']]['data'])
     # print(f'{excludedWeight}% of the holdings were not available from Tiingo unfortunately')
+    ETFDict['points'] = numberPoints
     ETFDict['holdings'] = holdingsList
     ETFDict['excludedWeight'] = excludedWeight
+    ETFDict['includedWeight'] = includedWeight
     return ETFDict
 
 

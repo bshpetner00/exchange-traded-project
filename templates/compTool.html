@@ -15,24 +15,24 @@
 <br><br><br>
 <div class="card-deck mt-5 mx-5">
   <div class="card mx-5">
-    <div class='my-5'style='height:300px'id="graph"></div>
-    <div class="card-body">
-      <h5 class="card-title">Currently Displaying SOXX data from past 5 years</h5>
+    <div class="card-body mx-auto">
+      <h5 class="card-title mx-auto">Currently Displaying {{ETFDict['Ticker']}} data from past 5 years</h5>
     </div>
+    <span class="border"></span>
+    <div class='my-5'style='height:300px'id="graph1"></div>
   </div>
   <div class="card mx-5">
-    <div class='my-5'style='height:300px'id="graph"></div>
-    <div class="card-body">
-      <!-- <h5 class="card-title">Card title</h5>
-      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> -->
+    <div class="card-body mx-auto">
+      <h5 class="card-title mx-auto">Displaying graph of {{ETFDict['Ticker']}} made up of it's parts</h5>
     </div>
+    <span class="border"></span>
+    <div class='my-5'style='height:300px'id="graph2"></div>
   </div>
 </div>
-
+<script src="static/js/require.js"></script>
 <script src="static/js/draw-graph.js"></script>
 <script>
-draw_graph("ACWF.csv",'2015-01-02', '2020-01-03')
+draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
 console.log({{ETFDict | safe}})
 compileETF({{ETFDict | safe}})
 </script>
