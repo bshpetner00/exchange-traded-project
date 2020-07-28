@@ -1,12 +1,14 @@
 from pymongo import MongoClient
 import os
 from decouple import config
-import bcrypt, csv
+import bcrypt, csv, pprint
 from tiingo import TiingoClient
 from os import path
 
 username = config('user')
 password = config('pass')
+
+printer = pprint.PrettyPrinter(width=200, compact=True)
 
 mongolink = "mongodb+srv://{}:{}@stockler.7bkls.mongodb.net/BKA?retryWrites=true&w=majority".format(username,password)
 # -- Initialization section --
@@ -36,10 +38,10 @@ def createUser(user,pw):
         users.insert_one({"user":user,"pw":hashed})
         return "Made user"
 
-def getETFData(ticker):
-    ETFDict = {}
-    fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
-    x = 0
+def cacheTiingoData(ticker):
+    # ETFDict = {}
+    # fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
+    # x = 0
     config = {}
 
     # To reuse the same HTTP Session across API calls (and have better performance), include a session key.
@@ -83,16 +85,43 @@ def getETFData(ticker):
             writer.writeheader()
             for beep in beeper:
                 writer.writerow({"date":beep['date'][0:10], 'value': beep['close']})
+        return True
     else:
         print(f'Unable to get tiingo data for {ticker}')
+        return False
+
+def getETFDict(ticker):
+    fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
+    excludedWeight = 0
+    ETFDict = {"Ticker":ticker}
+    holdingsList = {}
+    for holding in fromdb['Holdings']:
+        if not path.exists(f"static/csv/{holding['Ticker']}.csv") and not path.exists(f"static/csv/c{holding['Ticker']}.csv"):
+            succeeble = cacheTiingoData(holding['Ticker'])
+            if not succeeble:
+                excludedWeight+=holding['Weight']
+            else:
+                holdingsList[holding['Ticker']] = holding['Weight']
+        else:
+            holdingsList[holding['Ticker']] = holding['Weight']
+    # print(f'{excludedWeight}% of the holdings were not available from Tiingo unfortunately')
+    ETFDict['holdings'] = holdingsList
+    ETFDict['excludedWeight'] = excludedWeight
+    return ETFDict
 
 
-allTickers = db.ETFData.distinct('Ticker')
-for ticker in allTickers:
-    if ticker == "PRN" and not path.exists('static/csv/cPRN.csv'):
-        getETFData(ticker)
-    if not path.exists(f'static/csv/{ticker}.csv'):
-        getETFData(ticker)
+# printer.pprint(getETFDict('SOXX'))
+
+
+# allTickers = db.ETFData.distinct('Ticker')
+# for ticker in allTickers:
+#     if ticker == "PRN" and not path.exists('static/csv/cPRN.csv'):
+#         getETFData(ticker)
+#     if not path.exists(f'static/csv/{ticker}.csv'):
+#         getETFData(ticker)
+
+
+
 # getETFData("SOXX")
 # print(username)
 # print(password)

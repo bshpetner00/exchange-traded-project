@@ -1,3 +1,10 @@
+function compileETF(ETFDict){
+  
+}
+
+
+
+
 function draw_graph(dataset, year_start, year_end) {
   // set the dimensions and margins of the graph
   var margin = {top: 10, right: 30, bottom: 30, left: 60},
