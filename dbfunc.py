@@ -4,6 +4,7 @@ from decouple import config
 import bcrypt, csv, pprint
 from tiingo import TiingoClient
 from os import path
+import pandas as pd
 
 username = config('user')
 password = config('pass')
@@ -96,14 +97,27 @@ def getETFDict(ticker):
     ETFDict = {"Ticker":ticker}
     holdingsList = {}
     for holding in fromdb['Holdings']:
-        if not path.exists(f"static/csv/{holding['Ticker']}.csv") and not path.exists(f"static/csv/c{holding['Ticker']}.csv"):
+        filePath = ""
+        if ticker == "PRN":
+            filePath = f"static/csv/c{holding['Ticker']}.csv"
+        else:
+            filePath = f"static/csv/{holding['Ticker']}.csv"
+        if not path.exists(filePath):
             succeeble = cacheTiingoData(holding['Ticker'])
             if not succeeble:
                 excludedWeight+=holding['Weight']
             else:
-                holdingsList[holding['Ticker']] = holding['Weight']
+                holdingsList[holding['Ticker']] = {}
+                holdingsList[holding['Ticker']]['Weight'] = holding['Weight']
+                with open(filePath, newline='') as holdingFile:
+                    readler = csv.reader(holdingFile)
+                    holdingsList[holding['Ticker']]['data'] = list(readler)
         else:
-            holdingsList[holding['Ticker']] = holding['Weight']
+            holdingsList[holding['Ticker']] = {}
+            holdingsList[holding['Ticker']]['Weight'] = holding['Weight']
+            with open(filePath, newline='') as holdingFile:
+                readler = csv.reader(holdingFile)
+                holdingsList[holding['Ticker']]['data'] = list(readler)
     # print(f'{excludedWeight}% of the holdings were not available from Tiingo unfortunately')
     ETFDict['holdings'] = holdingsList
     ETFDict['excludedWeight'] = excludedWeight
