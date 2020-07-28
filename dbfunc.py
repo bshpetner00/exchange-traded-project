@@ -3,6 +3,7 @@ import os
 from decouple import config
 import bcrypt, csv
 from tiingo import TiingoClient
+from os import path
 
 username = config('user')
 password = config('pass')
@@ -51,11 +52,11 @@ def getETFData(ticker):
     client = TiingoClient(config)
 
     # print(beeper)
-    tickerList = []
-    for holding in fromdb['Holdings']:
-        t = holding['Ticker']
-        if t != '':
-            tickerList.append(holding['Ticker'])
+    # tickerList = []
+    # for holding in fromdb['Holdings']:
+    #     t = holding['Ticker']
+    #     if t != '':
+    #         tickerList.append(holding['Ticker'])
     beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
     # print(beeper)
     tempDict = {}
@@ -67,7 +68,10 @@ def getETFData(ticker):
             writer.writerow({"date":beep['date'][0:10], 'value': beep['close']})
 
 
-
+allTickers = db.ETFData.distinct('Ticker')
+for ticker in allTickers:
+    if not path.exists(f'static/csv/{ticker}.csv'):
+        getETFData(ticker)
 # getETFData("SOXX")
 # print(username)
 # print(password)
