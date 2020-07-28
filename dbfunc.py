@@ -47,7 +47,7 @@ def getETFData(ticker):
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "ea50972bedbd1a99dfd3593d0aa78e51e01a9e2b"
+    config['api_key'] = "3d62f451a1a8e486b5a6d1b11df2692154baf9d8"
 
     client = TiingoClient(config)
 
@@ -57,19 +57,40 @@ def getETFData(ticker):
     #     t = holding['Ticker']
     #     if t != '':
     #         tickerList.append(holding['Ticker'])
-    beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
-    # print(beeper)
-    tempDict = {}
-    with open(f'static/csv/{ticker}.csv', 'w', newline='') as csvfile:
-        fieldnames = ['date', 'value']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
-        for beep in beeper:
-            writer.writerow({"date":beep['date'][0:10], 'value': beep['close']})
+    checkIfWorked = False
+    # try:
+    #     beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
+    #     checkIfWorked = True
+    # except:
+    #     checkIfWorked = False
+    try:
+        beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
+        checkIfWorked = True
+    except:
+        checkIfWorked = False
+
+    if checkIfWorked:
+        # print(beeper)
+        # tempDict = {}
+        filePath = ''
+        if ticker == 'PRN':
+            filePath = f'static/csv/c{ticker}.csv'
+        else:
+            filePath = f'static/csv/{ticker}.csv'
+        with open(filePath, 'w', newline='') as csvfile:
+            fieldnames = ['date', 'value']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for beep in beeper:
+                writer.writerow({"date":beep['date'][0:10], 'value': beep['close']})
+    else:
+        print(f'Unable to get tiingo data for {ticker}')
 
 
 allTickers = db.ETFData.distinct('Ticker')
 for ticker in allTickers:
+    if ticker == "PRN" and not path.exists('static/csv/cPRN.csv'):
+        getETFData(ticker)
     if not path.exists(f'static/csv/{ticker}.csv'):
         getETFData(ticker)
 # getETFData("SOXX")
