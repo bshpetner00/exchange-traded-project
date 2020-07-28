@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import os
 from decouple import config
 import bcrypt
+from tiingo import TiingoClient
 
 username = config('user')
 password = config('pass')
@@ -38,13 +39,25 @@ def getETFData(ticker):
     ETFDict = {}
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     x = 0
+    config = {}
+
+    # To reuse the same HTTP Session across API calls (and have better performance), include a session key.
+    config['session'] = True
+
+    # If you don't have your API key as an environment variable,
+    # pass it in via a configuration dictionary.
+    config['api_key'] = "ea50972bedbd1a99dfd3593d0aa78e51e01a9e2b"
+
+    client = TiingoClient(config)
+
+    print(beeper)
+    tickerList = []
     for holding in fromdb['Holdings']:
-        if x ==0:
-            response = list(requests.get(f"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol={holding['Ticker']}&apikey={key}"))
-            print(response[0])
-            x+=1
-        else:
-            return
+        tickerList.append(holding['Ticker'])
+    beeper = client.get_dataframe(tickerList, frequency='weekly',
+                                                      metric_name='volume',
+                                                      startDate='2015-01-01',
+                                                      endDate='2020-01-01')
 
 # print(username)
 # print(password)
