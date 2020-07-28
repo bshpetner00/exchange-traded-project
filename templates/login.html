@@ -26,7 +26,7 @@ function realScroll(id){
       </div>
       <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
         <div class="card-body">
-          <form class="form-signin" method="post" style="width: 400px;  margin: auto;">
+          <form action="login" class="form-signin" method="post" style="width: 400px;  margin: auto;">
             <img class="mb-4" src="static/imgs/bicon.png" alt="" width="150" height="150">
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             <label for="inputEmail" class="sr-only">Username</label>
@@ -55,17 +55,17 @@ function realScroll(id){
       </div>
       <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
         <div class="card-body">
-          <form class="form-signin" method="post" style="width: 400px; margin: auto;">
+          <form action="/register" class="form-signin" method="post" style="width: 400px; margin: auto;">
             <img class="mb-4" src="static/imgs/bicon.png" alt="" width="150" height="150">
             <h1 class="h3 mb-3 font-weight-normal">Please Create an Account</h1>
             <label for="inputEmail" class="sr-only">Username</label>
-            <input type="text" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="">
+            <input type="text" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="" name="signUpUser">
             <br>
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="signUpPassword1">
             <br>
             <label for="repeatPassword" class="sr-only">Password</label>
-            <input type="password" id="repeatPassword" class="form-control" placeholder="repeatPassword" required="">
+            <input type="password" id="repeatPassword" class="form-control" placeholder="repeatPassword" required="" name="signUpPassword2">
             <div class="checkbox mb-3">
               <label>
               <input type="checkbox" value="remember-me"> Remember me

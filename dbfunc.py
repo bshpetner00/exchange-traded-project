@@ -34,7 +34,17 @@ def createUser(user,pw):
         users.insert_one({"user":user,"pw":hashed})
         return "Made user"
 
-
+def getETFData(ticker):
+    ETFDict = {}
+    fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
+    x = 0
+    for holding in fromdb['Holdings']:
+        if x ==0:
+            response = list(requests.get(f"https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol={holding['Ticker']}&apikey={key}"))
+            print(response[0])
+            x+=1
+        else:
+            return
 
 # print(username)
 # print(password)

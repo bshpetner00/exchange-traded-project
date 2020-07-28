@@ -24,7 +24,11 @@
         <div class="d-flex justify-content-center" style="padding-left: 7%;"><p class="intro">Analysis</p></div>
     </div>
 
-
+    {% if message is defined %}
+     <div class="alert alert-danger" role="alert">
+ {{ message }}
+     </div>
+{% endif %}
       {% block body %}
       {% endblock %}
     </div>

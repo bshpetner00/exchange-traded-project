@@ -35,25 +35,26 @@ def comparison():
 @app.route('/login',methods=["GET","POST"])
 def login():
     if request.method == "POST":
-        user = request.form["user"]
-        password = request.form["pass"]
+        user = request.form["loginUser"]
+        password = request.form["loginPassword"]
         message = "Password or username incorrect"
         #Auth User
         rauth = authUser(user,password)
         if rauth == "success":
             message = "Succesful login"
-            flash(message)
-            return "homepage"
+            # flash(message)
+            return render_template("index.html", message="logged in successfully")
         elif rauth == "wrong pw":
-            flash("Wrong Password")
+            # flash("Wrong Password")
+            return render_template("index.html", message="password worng")
     return render_template("login.html")
 
 
 @app.route('/register',methods=["GET","POST"])
 def register():
-    user = request.form["user"]
-    password0 = request.form["password0"]
-    password1 = request.form["password1"]
+    user = request.form["signUpUser"]
+    password0 = request.form["signUpPassword1"]
+    password1 = request.form["signUpPassword2"]
     #Create User
     if createUser(user,password) == "Name already taken":
         flash("Username already taken")
@@ -61,6 +62,8 @@ def register():
     if not password0 == password1:
         flash("Passwords didn't match")
         return "retry register"
+    else:
+        return render_template("index.html", message="Successfully created account!")
     flash("Account creation successful")
     return "login page"
 
