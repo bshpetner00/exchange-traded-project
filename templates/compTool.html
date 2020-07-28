@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+
+
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<!-- Load d3.js -->
+
+<!-- Create a div where the graph will take place -->
+{%block upper %}
+<script src="https://d3js.org/d3.v4.js"></script>
+<br><br><br>
+<div class="card-deck mt-5 mx-5">
+  <div class="card mx-5">
+    <div class='my-5'style='height:300px'id="graph"></div>
+    <div class="card-body">
+      <h5 class="card-title">Currently Displaying SOXX data from past 5 years</h5>
+      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+  </div>
+  <div class="card mx-5">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+  </div>
+</div>
+
+<script src="static/js/draw-graph.js"></script>
+<script>
+draw_graph("SOXX.csv",'2015-01-02', '2020-01-03')
+</script>
+{% endblock %}

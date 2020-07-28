@@ -30,7 +30,7 @@ def add():
 
 @app.route('/comparison')
 def comparison():
-    return ""
+    return render_template("compTool.html")
 
 @app.route('/login',methods=["GET","POST"])
 def login():

@@ -19,9 +19,11 @@
           <li id="login"><a class="navitem" href="/login" style="color: darkslategrey;">Sign Up or Login</a></li>
         </ul>
       </div>
-
+      <br>
+      {% block upper %}
         <div class="d-flex justify-content-center"><p style="margin-top: 10%;" class="intro">Brooklyn</p></div>
         <div class="d-flex justify-content-center" style="padding-left: 7%;"><p class="intro">Analysis</p></div>
+        {% endblock %}
     </div>
 
     {% if message is defined %}

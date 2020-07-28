@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import os
 from decouple import config
-import bcrypt
+import bcrypt, csv
 from tiingo import TiingoClient
 
 username = config('user')
@@ -50,17 +50,27 @@ def getETFData(ticker):
 
     client = TiingoClient(config)
 
-    print(beeper)
+    # print(beeper)
     tickerList = []
     for holding in fromdb['Holdings']:
-        tickerList.append(holding['Ticker'])
-    beeper = client.get_dataframe(tickerList, frequency='weekly',
-                                                      metric_name='volume',
-                                                      startDate='2015-01-01',
-                                                      endDate='2020-01-01')
+        t = holding['Ticker']
+        if t != '':
+            tickerList.append(holding['Ticker'])
+    beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
+    # print(beeper)
+    tempDict = {}
+    with open(f'static/csv/{ticker}.csv', 'w', newline='') as csvfile:
+        fieldnames = ['date', 'value']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for beep in beeper:
+            writer.writerow({"date":beep['date'][0:10], 'value': beep['close']})
 
+
+
+# getETFData("SOXX")
 # print(username)
 # print(password)
 # print (createUser("scray","doasdaso"))
-print (authUser("scray","doasdaso"))
-print (authUser("scray","dasdasdas"))
+# print (authUser("scray","doasdaso"))
+# print (authUser("scray","dasdasdas"))
