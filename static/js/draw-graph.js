@@ -1,5 +1,26 @@
-function compileETF(ETFDict){
-  
+function compileETF(etfDict){
+  var holdings = etfDict['holdings'];
+  var excludedWeight = etfDict['excludedWeight'];
+  var ticker = etfDict['Ticker'];
+  var holdingTickers = Object.keys(holdings)
+  var result = {}
+  var x = 0;
+  for (date in holdings[holdingTickers[0]]['data']){
+    if (date > 0){
+      var z = 0;
+      var sumForDay = 0;
+      for (holding in holdings){
+        //console.log(holdings[holding]['data'][date]);
+        var weight = holdings[holding]['Weight'];
+        sumForDay += holdings[holding]['data'][date][1] * weight / 100;
+        // sumForDay +=
+      }
+      result[holdings[holdingTickers[0]]['data'][date]] = sumForDay;
+      // /console.log(date[0])
+    }
+     x++;
+  }
+  console.log(result)
 }
 
 
