@@ -14,8 +14,11 @@
 
 <!-- Create a div where the graph will take place -->
 {% block upper %}
+
 <script src="https://d3js.org/d3.v4.js"></script>
+
 <br><br><br>
+
 <div class="card mx-auto w-50">
   <div class="card-body mx-auto">
     <h5 class="card-title mx-auto">View ETF Data</h5>
@@ -26,7 +29,9 @@
   </select>
   </div>
 </div>
+
 <div class="card-deck mt-5 mx-5">
+
   <div class="card mx-5">
     <div class="card-body mx-auto">
       <h5 class="card-title mx-auto">Currently Displaying {{ETFDict['Ticker']}} data from past 5 years</h5>
@@ -34,13 +39,15 @@
     <span class="border"></span>
     <div class='mx-auto my-5'style='height:300px'id="graph1"></div>
   </div>
+
   <div class="card mx-5">
     <div class="card-body mx-auto">
-      <h5 class="card-title mx-auto">Displaying graph of {{ETFDict['Ticker']}} made up of it's parts</h5>
+      <h5 class="card-title mx-auto">Displaying graph of {{ETFDict['Ticker']}} made up of its parts</h5>
     </div>
     <span class="border"></span>
     <div class='mx-auto my-5'style='height:300px'id="graph2"></div>
   </div>
+
 </div>
 
 <div class="card mx-auto my-5 w-75">
