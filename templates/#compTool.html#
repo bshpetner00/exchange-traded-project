@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+
+{% block head %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
+{% endblock %}
+
+<!-- Create a div where the graph will take place -->
+{% block upper %}
+<script src="https://d3js.org/d3.v4.js"></script>
+<br><br><br>
+<div class="card mx-5">
+  <div class="card-body mx-auto">
+    <h5 class="card-title mx-auto">View ETF Data</h5>
+  <select id="pickETF" class="selectpicker" data-live-search="true" style="text-align:center;">
+    {% for option in options %}
+    <option data-tokens={{option}} value={{option}}>{{option}}</option>
+    {% endfor %}
+  </select>
+  </div>
+</div>
+<div class="card-deck mt-5 mx-5">
+  <div class="card mx-5">
+    <div class="card-body mx-auto">
+      <h5 class="card-title mx-auto">Currently Displaying {{ETFDict['Ticker']}} data from past 5 years</h5>
+    </div>
+    <span class="border"></span>
+    <div class='my-5'style='height:300px'id="graph1"></div>
+  </div>
+  <div class="card mx-5">
+    <div class="card-body mx-auto">
+      <h5 class="card-title mx-auto">Displaying graph of {{ETFDict['Ticker']}} made up of it's parts</h5>
+    </div>
+    <span class="border"></span>
+    <div class='my-5'style='height:300px'id="graph2"></div>
+  </div>
+</div>
+<script src="static/js/draw-graph.js"></script>
+<script>
+draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
+console.log({{ETFDict | safe}})
+compileETF({{ETFDict | safe}})
+</script>
+{% endblock %}

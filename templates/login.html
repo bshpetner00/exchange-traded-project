@@ -1,6 +1,15 @@
 {% extends "index.html" %}
 
 {% block body %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+  {% for message in messages %}
+  <li  class="alert alert-danger">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 <script>
 function scrollber(id){
   // item = document.getElementById('actualbutton' + id)
@@ -33,7 +42,7 @@ function realScroll(id){
             <input type="text" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="" name="loginUser">
             <br>
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="loginPassword">>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="loginPassword">
             <div class="checkbox mb-3">
               <label>
               <input type="checkbox" value="remember-me"> Remember me
@@ -65,13 +74,8 @@ function realScroll(id){
             <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="signUpPassword1">
             <br>
             <label for="repeatPassword" class="sr-only">Password</label>
-            <input type="password" id="repeatPassword" class="form-control" placeholder="repeatPassword" required="" name="signUpPassword2">
-            <div class="checkbox mb-3">
-              <label>
-              <input type="checkbox" value="remember-me"> Remember me
-              </label>
-            </div>
-            <button id="actualbutton2" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <input type="password" id="repeatPassword" class="form-control" placeholder="Password" required="" name="signUpPassword2">
+            <button id="actualbutton2" class="btn btn-lg btn-primary btn-block" type="submit">Create Password</button>
             <p class="mt-5 mb-3 text-muted">© 2020</p>
           </form>
         </div>

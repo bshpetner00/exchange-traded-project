@@ -28,16 +28,14 @@ def login():
     if request.method == "POST":
         user = request.form["loginUser"]
         password = request.form["loginPassword"]
-        message = "Password or username incorrect"
         #Auth User
         rauth = authUser(user,password)
         if rauth == "success":
-            message = "Succesful login"
-            # flash(message)
-            return render_template("index.html", message="logged in successfully")
+            flash("Logged In Successfully")
+            return render_template("login.html")
         elif rauth == "wrong pw":
-            # flash("Wrong Password")
-            return render_template("index.html", message="password worng")
+            flash("Password or Username Incorrect")
+            return render_template("login.html")
     return render_template("login.html")
 
 
@@ -49,14 +47,12 @@ def register():
     #Create User
     if createUser(user,password) == "Name already taken":
         flash("Username already taken")
-        return "retry register"
+        return render_template("login.html")
     if not password0 == password1:
         flash("Passwords didn't match")
-        return "retry register"
-    else:
-        return render_template("index.html", message="Successfully created account!")
+        return render_template("login.html")
     flash("Account creation successful")
-    return "login page"
+    return render_template("login.html")
 
 @app.route('/admin')
 
