@@ -15,6 +15,7 @@ mongolink = "mongodb+srv://{}:{}@stockler.7bkls.mongodb.net/BKA?retryWrites=true
 # -- Initialization section --
 client = MongoClient(mongolink)
 db = client['BKA']
+dbtool = db.ETFData
 
 def authUser(user,pw):
     users = db.users
@@ -39,8 +40,9 @@ def createUser(user,pw):
         users.insert_one({"user":user,"pw":hashed})
         return "Made user"
 
-def cacheTiingoData(ticker):
+def cacheTiingoData(ticker, index, bigTicker):
     # ETFDict = {}
+    tickerholder = bigTicker
     ticker = ticker.strip()
     # fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # x = 0
@@ -52,15 +54,21 @@ def cacheTiingoData(ticker):
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "87dfccc8b40644702920b616d692864f1a82e1f8"
+    config['api_key'] = "2a8a1960f3514dc062c00f8037579e0cfb5f22dd"
 
     client = TiingoClient(config)
     checkIfWorked = False
     try:
         beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
+        print('\n')
+        printer.pprint(beeper)
+        print('\n')
         checkIfWorked = True
     except:
         checkIfWorked = False
+        # print('\n')
+        # printer.pprint(beeper)
+        # print('\n')
 
     if checkIfWorked:
         # print(beeper)
@@ -81,10 +89,10 @@ def cacheTiingoData(ticker):
         return True
     else:
         print(f'Unable to get tiingo data for {ticker}')
+        dbtool.update_one({"Ticker":tickerholder},{"$set":{"Holdings." + str(index) + ".noTiingo": True}})
         return False
 
 def getETFDict(ticker):
-    dbtool = db.ETFData
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # dbid = db.ObjectId(fromdb['_id'])
     # print(len(ticker))
@@ -118,10 +126,9 @@ def getETFDict(ticker):
         else:
             filePath = f"static/csv/{hTicker}.csv"
         if not path.exists(filePath) and "noTiingo" not in holding:
-            succeeble = cacheTiingoData(hTicker)
+            succeeble = cacheTiingoData(hTicker, x, tickerholder)
             if not succeeble:
                 excludedWeight+=holding['Weight']
-                dbtool.update({"Ticker":tickerholder},{"$set":{"Holdings." + str(x) + ".noTiingo": True}})
             else:
                 includedWeight+=holding['Weight']
                 holdingsList[holding['Ticker']] = {}
@@ -158,7 +165,7 @@ def getETFNames():
 
 
 
-printer.pprint(getETFDict('SOXX'))
+printer.pprint(getETFDict("SOXX"))
 
 
 # allTickers = db.ETFData.distinct('Ticker')
