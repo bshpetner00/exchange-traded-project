@@ -54,7 +54,7 @@ def cacheTiingoData(ticker, index, bigTicker):
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "2a8a1960f3514dc062c00f8037579e0cfb5f22dd"
+    config['api_key'] = "c33e0a5817786310d82f9671fb47eb986b6bb0ff"
 
     client = TiingoClient(config)
     checkIfWorked = False
@@ -163,9 +163,10 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-
-
-printer.pprint(getETFDict("SOXX"))
+#
+# for tick in getETFNames():
+#     getETFDict(tick)
+# printer.pprint(getETFDict("SOXX"))
 
 
 # allTickers = db.ETFData.distinct('Ticker')
