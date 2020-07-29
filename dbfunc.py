@@ -84,8 +84,11 @@ def cacheTiingoData(ticker):
         return False
 
 def getETFDict(ticker):
+    dbtool = db.ETFData
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
+    # dbid = db.ObjectId(fromdb['_id'])
     # print(len(ticker))
+    tickerholder = ticker
     ticker = ticker.strip()
     # print(len(ticker))
     # printer.pprint(fromdb)
@@ -104,6 +107,7 @@ def getETFDict(ticker):
         listler = list(readler)
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
+    x = 0
     for holding in fromdb['Holdings']:
         hTicker = holding['Ticker'].strip()
         filePath = ""
@@ -113,10 +117,11 @@ def getETFDict(ticker):
             filePath = f'static/csv/OMFL.csv'
         else:
             filePath = f"static/csv/{hTicker}.csv"
-        if not path.exists(filePath):
+        if not path.exists(filePath) and "noTiingo" not in holding:
             succeeble = cacheTiingoData(hTicker)
             if not succeeble:
                 excludedWeight+=holding['Weight']
+                dbtool.update({"Ticker":tickerholder},{"$set":{"Holdings." + str(x) + ".noTiingo": True}})
             else:
                 includedWeight+=holding['Weight']
                 holdingsList[holding['Ticker']] = {}
@@ -126,6 +131,8 @@ def getETFDict(ticker):
                     holdingsList[holding['Ticker']]['data'] = list(readler)
                     if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
                         numberPoints = len(holdingsList[holding['Ticker']]['data'])
+        elif "noTiingo" in holding:
+            excludedWeight += holding['Weight']
         else:
             includedWeight+=holding['Weight']
             holdingsList[holding['Ticker']] = {}
@@ -135,6 +142,7 @@ def getETFDict(ticker):
                 holdingsList[holding['Ticker']]['data'] = list(readler)
                 if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
                     numberPoints = len(holdingsList[holding['Ticker']]['data'])
+        x+=1
     # print(f'{excludedWeight}% of the holdings were not available from Tiingo unfortunately')
     ETFDict['points'] = numberPoints
 
@@ -150,7 +158,7 @@ def getETFNames():
 
 
 
-# printer.pprint(getETFDict('SOXX'))
+printer.pprint(getETFDict('SOXX'))
 
 
 # allTickers = db.ETFData.distinct('Ticker')
