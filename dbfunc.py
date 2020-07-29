@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import os
 from decouple import config
-import bcrypt, csv, pprint
+import bcrypt, csv, pprint, requests, json
 from tiingo import TiingoClient
 from os import path
 import pandas as pd
@@ -41,20 +41,29 @@ def createUser(user,pw):
         return "Made user"
 
 def cacheTiingoData(ticker, index, bigTicker):
-    # ETFDict = {}
+    # ETFDict = {
+    config = {}
+    config['api_key'] = "c33e0a5817786310d82f9671fb47eb986b6bb0ff"
+    try:
+        headers = {
+            'Content-Type': 'application/json'
+            }
+        requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices" + config['api_key'], headers=headers).json()
+    except:
+        print("\nFailed api call\n")
+        return False
+
     tickerholder = bigTicker
     ticker = ticker.strip()
     # fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # x = 0
     # print(ticker)
-    config = {}
 
     # To reuse the same HTTP Session across API calls (and have better performance), include a session key.
     config['session'] = True
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "c33e0a5817786310d82f9671fb47eb986b6bb0ff"
 
     client = TiingoClient(config)
     checkIfWorked = False
@@ -163,7 +172,7 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-#
+# getETFDict("ACWV")
 # for tick in getETFNames():
 #     getETFDict(tick)
 # printer.pprint(getETFDict("SOXX"))
