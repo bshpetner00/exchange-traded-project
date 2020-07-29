@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+
+{% block body %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+  {% for message in messages %}
+  <li  class="alert alert-danger">{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<script>
+function scrollber(id){
+  // item = document.getElementById('actualbutton' + id)
+  setTimeout(realScroll(id), 1)
+  // console.log(item)
+}
+function realScroll(id){
+  item = document.getElementById('actualbutton' + id)
+  item.scrollIntoView()
+}
+
+</script>
+
+<div class="page text-center" id="loginpage">
+  <div class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick="scrollber(1)">
+            Click to Login
+          </button>
+        </h2>
+      </div>
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+          <form action="login" class="form-signin" method="post" style="width: 400px;  margin: auto;">
+            <img class="mb-4" src="static/imgs/bicon.png" alt="" width="150" height="150">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="inputEmail" class="sr-only">Username</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="" name="loginUser">
+            <br>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="loginPassword">
+            <div class="checkbox mb-3">
+              <label>
+              <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <button id="actualbutton1" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">© 2020</p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingTwo">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" onclick="scrollber(2)">
+            Click to Sign Up
+          </button>
+        </h2>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+        <div class="card-body">
+          <form action="/register" class="form-signin" method="post" style="width: 400px; margin: auto;">
+            <img class="mb-4" src="static/imgs/bicon.png" alt="" width="150" height="150">
+            <h1 class="h3 mb-3 font-weight-normal">Please Create an Account</h1>
+            <label for="inputEmail" class="sr-only">Username</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="" name="signUpUser">
+            <br>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="signUpPassword1">
+            <br>
+            <label for="repeatPassword" class="sr-only">Password</label>
+            <input type="password" id="repeatPassword" class="form-control" placeholder="Password" required="" name="signUpPassword2">
+            <button id="actualbutton2" class="btn btn-lg btn-primary btn-block" type="submit">Create Password</button>
+            <p class="mt-5 mb-3 text-muted">© 2020</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
