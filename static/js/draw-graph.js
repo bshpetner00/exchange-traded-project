@@ -9,6 +9,16 @@ userETF.addEventListener("change",function(){
     console.log(userETF.value);
     data.ETF= userETF.value;
     console.log(data);
+    fetch("/create-study", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sendThis)
+    }).then(res => res.json())
+	.then(data => {
+            window.location = "/" + data.redirect;
+	})
 })
 
 function compileETF(etfDict) {
