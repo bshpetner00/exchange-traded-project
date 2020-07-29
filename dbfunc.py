@@ -132,6 +132,12 @@ def getETFDict(ticker):
     ETFDict['includedWeight'] = includedWeight
     return ETFDict
 
+def getETFNames():
+    allTickers = db.ETFData.distinct('Ticker')
+    print(allTickers)
+    return allTickers
+    
+
 
 # printer.pprint(getETFDict('SOXX'))
 
@@ -144,10 +150,3 @@ def getETFDict(ticker):
 #         getETFData(ticker)
 
 
-
-# getETFData("SOXX")
-# print(username)
-# print(password)
-# print (createUser("scray","doasdaso"))
-# print (authUser("scray","doasdaso"))
-# print (authUser("scray","dasdasdas"))

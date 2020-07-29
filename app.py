@@ -1,14 +1,13 @@
 # ---- YOUR APP STARTS HERE ----
 # -- Import section --
-from flask import Flask
-from flask import render_template
-from flask import request
+from flask import Flask,render_template,request,flash
 import os
 from dbfunc import *
 
 
 # -- Initialization section --
 app = Flask(__name__)
+app.secret_key = os.urandom(32)
 
 # -- Routes section --
 # INDEX
@@ -18,20 +17,11 @@ def index():
     return render_template('index.html')
 
 
-# CONNECT TO DB, ADD DATA
-
-@app.route('/add')
-def add():
-    # connect to the database
-    # insert new data
-
-    # return a message to the user
-    return ""
-
 @app.route('/comparison')
 def comparison():
     ETFDict = getETFDict("PSMB")
-    return render_template("compTool.html", ETFDict = ETFDict)
+    tickers = getETFNames()
+    return render_template("compTool.html",options=tickers,ETFDict = ETFDict)
 
 @app.route('/login',methods=["GET","POST"])
 def login():

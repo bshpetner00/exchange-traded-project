@@ -1,6 +1,7 @@
 // const createCsvWriter = require('node_modules/csv-writer').createObjectCsvWriter;
 // let parser = d3.
 
+
 function compileETF(etfDict) {
   var holdings = etfDict['holdings'];
   var excludedWeight = etfDict['excludedWeight'];
@@ -48,9 +49,9 @@ function draw_compiled_graph(data, year_start, year_end){
       top: 10,
       right: 30,
       bottom: 30,
-      left: 60
+      left: 30
     },
-    width = 560 - margin.left - margin.right,
+    width = 500 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
@@ -108,9 +109,9 @@ function draw_graph(dataset, year_start, year_end) {
       top: 10,
       right: 30,
       bottom: 30,
-      left: 60
+      left: 30
     },
-    width = 560 - margin.left - margin.right,
+    width = 500 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
   // append the svg object to the body of the page
