@@ -1,3 +1,4 @@
+
 {% extends 'index.html' %}
 
 {% block head %}
@@ -18,7 +19,7 @@
 <div class="card mx-auto w-50">
   <div class="card-body mx-auto">
     <h5 class="card-title mx-auto">View ETF Data</h5>
-  <select class="selectpicker" data-live-search="true" style="text-align:center;">
+  <select id="pickETF"class="selectpicker" data-live-search="true" style="text-align:center;">
     {% for option in options %}
     <option data-tokens={{option}} value={{option}}>{{option}}</option>
     {% endfor %}

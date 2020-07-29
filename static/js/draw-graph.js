@@ -2,6 +2,14 @@
 // let parser = d3.
 // var ratio;
 
+let data= {"ETF":"SOXX"}
+
+var userETF = document.getElementById("pickETF");
+userETF.addEventListener("change",function(){
+    console.log(userETF.value);
+    data.ETF= userETF.value;
+    console.log(data);
+})
 
 function compileETF(etfDict) {
   var ratio = parseFloat(etfDict['startVal']);
