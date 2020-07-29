@@ -66,9 +66,8 @@ def getetf():
     if request.method == "POST":
         etf = request.get_json()
         ETFDict = getETFDict(etf['ETF'])
-        print(etf)
         return ETFDict
-    return ""
+    return {"It":"Did not work"}
 
 if __name__  == "__main__":
     app.debug = True

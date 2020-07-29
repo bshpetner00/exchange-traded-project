@@ -52,7 +52,7 @@ def cacheTiingoData(ticker):
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-    config['api_key'] = "87dfccc8b40644702920b616d692864f1a82e1f8"
+    config['api_key'] = "e6d87822c7f79c6478f784b5af320ac0c96beda7"
 
     client = TiingoClient(config)
     checkIfWorked = False
@@ -105,7 +105,7 @@ def getETFDict(ticker):
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
     for holding in fromdb['Holdings']:
-        hTicker = holding['Ticker'].strip()
+        hTicker = str(holding['Ticker']).strip()
         filePath = ""
         if ticker == "PRN":
             filePath = f"static/csv/c{hTicker}.csv"

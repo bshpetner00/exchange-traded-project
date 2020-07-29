@@ -21,6 +21,40 @@ userETF.addEventListener("change",function(){
 	    clear_graphs();
 	    draw_graph(data["Ticker"] + ".csv",'2015-01-02', '2020-01-03')
 	    compileETF(data)
+	    document.getElementById("title0").innerHTML = "Currently Displaying " + data["Ticker"]+" data from past 5 years";
+	    document.getElementById("title1").innerHTML = "Displaying graph of " + data["Ticker"]+" made up of its parts";
+	    document.getElementById("label0").innerHTML = "This graph depicts the price history of " + data["Ticker"]+" over the past 5 years";
+	    document.getElementById("label1").innerHTML = "These results are about " + data['excludedWeight'].toFixed(3) + " off because some historical data for the holdings was unavailable";
+	    document.getElementById("holding").innerHTML = "List of holdings included for " + data['Ticker'];
+	    let listHoldings = document.getElementById("listholdings");
+	    while (listHoldings.firstChild) {
+		listHoldings.removeChild(listHoldings.lastChild);
+	    }
+	    for (holding in data['holdings']){
+		let r = document.createElement("li");
+		r.classList.add("list-group-item");
+		let div0 = document.createElement("div");
+		div0.classList.add('row');
+		let div1 = document.createElement("div");
+		div1.classList.add('col-8');
+		let para0 = document.createElement("p");
+		para0.innerHTML = holding;
+		div1.appendChild(para0);
+		let span0 = document.createElement("span");
+		span0.classList.add('border');
+		let div2 = document.createElement("div");
+		div2.classList.add('col-2');
+		let para1 = document.createElement("p");
+		para1.classList.add('mx-auto');
+		para1.innerHTML = data['holdings'][holding]['Weight'].toFixed(3).toString() + "%";
+		div2.appendChild(para1);
+		div0.appendChild(div1);
+		div0.appendChild(span0);
+		div0.appendChild(div2);
+		r.appendChild(div0);
+		listHoldings.appendChild(r);
+	    }
+
             //window.location = "/" + data.redirect;
 	})
 })
