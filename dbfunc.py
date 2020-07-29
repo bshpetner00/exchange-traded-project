@@ -49,7 +49,7 @@ def cacheTiingoData(ticker, index, bigTicker):
             'Content-Type': 'application/json'
             }
         requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices?token=" + config['api_key'], headers=headers).json()
-        print(requestResponse)
+        # print(requestResponse)
         if requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
             return False
     except:
@@ -104,6 +104,9 @@ def cacheTiingoData(ticker, index, bigTicker):
         dbtool.update_one({"Ticker":tickerholder},{"$set":{"Holdings." + str(index) + ".noTiingo": True}})
         return False
 
+def hasNumbers(inputString):
+     return any(char.isdigit() for char in inputString)
+
 def getETFDict(ticker):
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # dbid = db.ObjectId(fromdb['_id'])
@@ -129,6 +132,9 @@ def getETFDict(ticker):
         # printer.pprint(listler)
     x = 0
     for holding in fromdb['Holdings']:
+        if hasNumbers(holding['Ticker']):
+            excludedWeight += holding['Weight']
+            continue
         hTicker = holding['Ticker'].strip().replace('\\','')
         filePath = ""
         if ticker == "PRN":
