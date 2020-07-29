@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import os
 from decouple import config
-import bcrypt, csv, pprint
+import bcrypt, csv, pprint, requests, json
 from tiingo import TiingoClient
 from os import path
 import pandas as pd
@@ -15,6 +15,7 @@ mongolink = "mongodb+srv://{}:{}@stockler.7bkls.mongodb.net/BKA?retryWrites=true
 # -- Initialization section --
 client = MongoClient(mongolink)
 db = client['BKA']
+dbtool = db.ETFData
 
 def authUser(user,pw):
     users = db.users
@@ -39,28 +40,51 @@ def createUser(user,pw):
         users.insert_one({"user":user,"pw":hashed})
         return "Made user"
 
-def cacheTiingoData(ticker):
-    # ETFDict = {}
+def cacheTiingoData(ticker, index, bigTicker):
+    # ETFDict = {
+    config = {}
+    config['api_key'] = "e6d87822c7f79c6478f784b5af320ac0c96beda7"
+    try:
+        headers = {
+            'Content-Type': 'application/json'
+            }
+        requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices?token=" + config['api_key'], headers=headers).json()
+        # print(requestResponse)
+        if requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
+            return False
+    except:
+        print("\nFailed api call\n")
+        return False
+
+    tickerholder = bigTicker
     ticker = ticker.strip()
     # fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # x = 0
     # print(ticker)
-    config = {}
 
     # To reuse the same HTTP Session across API calls (and have better performance), include a session key.
     config['session'] = True
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
+<<<<<<< HEAD
     config['api_key'] = "e6d87822c7f79c6478f784b5af320ac0c96beda7"
+=======
+>>>>>>> 8523f25608fbd7bd2dfd486b6f22dd818e413e6c
 
     client = TiingoClient(config)
     checkIfWorked = False
     try:
         beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
+        print('\n')
+        printer.pprint(beeper)
+        print('\n')
         checkIfWorked = True
     except:
         checkIfWorked = False
+        # print('\n')
+        # printer.pprint(beeper)
+        # print('\n')
 
     if checkIfWorked:
         # print(beeper)
@@ -81,12 +105,18 @@ def cacheTiingoData(ticker):
         return True
     else:
         print(f'Unable to get tiingo data for {ticker}')
+        dbtool.update_one({"Ticker":tickerholder},{"$set":{"Holdings." + str(index) + ".noTiingo": True}})
         return False
+
+def hasNumbers(inputString):
+     return any(char.isdigit() for char in inputString)
 
 def getETFDict(ticker):
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
+    # dbid = db.ObjectId(fromdb['_id'])
     # print(len(ticker))
-    ticker = ticker.strip()
+    tickerholder = ticker
+    ticker = ticker.strip().replace('\\','')
     # print(len(ticker))
     # printer.pprint(fromdb)
     excludedWeight = 0
@@ -104,8 +134,16 @@ def getETFDict(ticker):
         listler = list(readler)
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
+    x = 0
     for holding in fromdb['Holdings']:
+<<<<<<< HEAD
         hTicker = str(holding['Ticker']).strip()
+=======
+        if hasNumbers(holding['Ticker']):
+            excludedWeight += holding['Weight']
+            continue
+        hTicker = holding['Ticker'].strip().replace('\\','')
+>>>>>>> 8523f25608fbd7bd2dfd486b6f22dd818e413e6c
         filePath = ""
         if ticker == "PRN":
             filePath = f"static/csv/c{hTicker}.csv"
@@ -113,8 +151,8 @@ def getETFDict(ticker):
             filePath = f'static/csv/OMFL.csv'
         else:
             filePath = f"static/csv/{hTicker}.csv"
-        if not path.exists(filePath):
-            succeeble = cacheTiingoData(hTicker)
+        if not path.exists(filePath) and "noTiingo" not in holding:
+            succeeble = cacheTiingoData(hTicker, x, tickerholder)
             if not succeeble:
                 excludedWeight+=holding['Weight']
             else:
@@ -126,6 +164,8 @@ def getETFDict(ticker):
                     holdingsList[holding['Ticker']]['data'] = list(readler)
                     if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
                         numberPoints = len(holdingsList[holding['Ticker']]['data'])
+        elif "noTiingo" in holding:
+            excludedWeight += holding['Weight']
         else:
             includedWeight+=holding['Weight']
             holdingsList[holding['Ticker']] = {}
@@ -135,6 +175,7 @@ def getETFDict(ticker):
                 holdingsList[holding['Ticker']]['data'] = list(readler)
                 if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
                     numberPoints = len(holdingsList[holding['Ticker']]['data'])
+        x+=1
     # print(f'{excludedWeight}% of the holdings were not available from Tiingo unfortunately')
     ETFDict['points'] = numberPoints
 
@@ -148,9 +189,10 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-
-
-# printer.pprint(getETFDict('SOXX'))
+getETFDict("AOR")
+# for tick in getETFNames():
+#     getETFDict(tick)
+# printer.pprint(getETFDict("SOXX"))
 
 
 # allTickers = db.ETFData.distinct('Ticker')
