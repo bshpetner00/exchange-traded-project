@@ -43,8 +43,11 @@
 </div>
 <script src="static/js/draw-graph.js"></script>
 <script>
+// var ratiler = draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
 draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
-console.log({{ETFDict | safe}})
-compileETF({{ETFDict | safe}})
+// console.log(ratiler);
+var converted = {{ETFDict | safe}}
+console.log(converted)
+compileETF(converted)
 </script>
 {% endblock %}

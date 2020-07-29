@@ -19,7 +19,7 @@ def index():
 
 @app.route('/comparison')
 def comparison():
-    ETFDict = getETFDict("PSMB")
+    ETFDict = getETFDict("SOXX")
     tickers = getETFNames()
     return render_template("compTool.html",options=tickers,ETFDict = ETFDict)
 

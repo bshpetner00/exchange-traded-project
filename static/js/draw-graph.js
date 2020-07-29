@@ -1,19 +1,23 @@
 // const createCsvWriter = require('node_modules/csv-writer').createObjectCsvWriter;
 // let parser = d3.
+// var ratio;
 
 
 function compileETF(etfDict) {
+  var ratio = parseFloat(etfDict['startVal']);
   var holdings = etfDict['holdings'];
   var excludedWeight = etfDict['excludedWeight'];
   var ticker = etfDict['Ticker'];
-  var holdingTickers = Object.keys(holdings)
-  var result = []
+  var holdingTickers = Object.keys(holdings);
+  var result = [];
+  // var ratio = 0;
+
   var x = 0;
   // var sumWeights = 0;
   for (date in holdings[holdingTickers[0]]['data']) {
+    var sumForDay = 0;
     if (date > 0) {
       var z = 0;
-      var sumForDay = 0;
       for (holding in holdings) {
         //console.log(holdings[holding]['data'][date]);
 
@@ -30,6 +34,11 @@ function compileETF(etfDict) {
       // console.log(holdings[holdingTickers[0]]['data'][date])
       var realDate = d3.timeParse("%Y-%m-%d")(holdings[holdingTickers[0]]['data'][date][0]);
       // console.log(realDate);
+      if (date == 1){
+        ratio = ratio / sumForDay;
+        console.log(ratio)
+      }
+      sumForDay *= ratio;
       var parsable = {date:realDate, value:sumForDay};
       result.push(parsable);
       // result[d3.timeParse("%Y-%m-%d")(holdings[holdingTickers[0]]['data'][date])] = sumForDay;
@@ -45,6 +54,7 @@ function compileETF(etfDict) {
 
 function draw_compiled_graph(data, year_start, year_end){
   // set the dimensions and margins of the graph
+  console.log(data);
   var margin = {
       top: 10,
       right: 30,
@@ -104,6 +114,7 @@ function draw_compiled_graph(data, year_start, year_end){
 
 
 function draw_graph(dataset, year_start, year_end) {
+
   // set the dimensions and margins of the graph
   var margin = {
       top: 10,
@@ -136,7 +147,8 @@ function draw_graph(dataset, year_start, year_end) {
 
     // Now I can use this dataset:
     function(data) {
-      // console.log(data)
+      // ratio = data[0].value;
+      // console.log(ratio);
 
       // Add X axis --> it is a date format
       var x = d3.scaleTime()
@@ -173,4 +185,6 @@ function draw_graph(dataset, year_start, year_end) {
         )
 
     })
+    // console.log(ratio);
+    // return ratio;
 }

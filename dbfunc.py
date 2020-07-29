@@ -87,13 +87,23 @@ def getETFDict(ticker):
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # print(len(ticker))
     ticker = ticker.strip()
-    print(len(ticker))
+    # print(len(ticker))
     printer.pprint(fromdb)
     excludedWeight = 0
     ETFDict = {"Ticker":ticker}
     holdingsList = {}
     includedWeight = 0
     numberPoints = 0
+    fp = ''
+    if ticker == "PRN":
+        fp = 'static/csv/cPRN.csv'
+    else:
+        fp = f'static/csv/{ticker}.csv'
+    with open(fp, newline='') as ratio:
+        readler = csv.reader(ratio)
+        listler = list(readler)
+        ETFDict['startVal'] = listler[1][1]
+        # printer.pprint(listler)
     for holding in fromdb['Holdings']:
         hTicker = holding['Ticker'].strip()
         filePath = ""
@@ -127,6 +137,7 @@ def getETFDict(ticker):
                     numberPoints = len(holdingsList[holding['Ticker']]['data'])
     # print(f'{excludedWeight}% of the holdings were not available from Tiingo unfortunately')
     ETFDict['points'] = numberPoints
+
     ETFDict['holdings'] = holdingsList
     ETFDict['excludedWeight'] = excludedWeight
     ETFDict['includedWeight'] = includedWeight
@@ -134,9 +145,9 @@ def getETFDict(ticker):
 
 def getETFNames():
     allTickers = db.ETFData.distinct('Ticker')
-    print(allTickers)
+    # print(allTickers)
     return allTickers
-    
+
 
 
 # printer.pprint(getETFDict('SOXX'))
@@ -148,5 +159,3 @@ def getETFNames():
 #         getETFData(ticker)
 #     if not path.exists(f'static/csv/{ticker}.csv'):
 #         getETFData(ticker)
-
-
