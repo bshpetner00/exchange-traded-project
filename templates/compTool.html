@@ -38,6 +38,13 @@
     </div>
     <span class="border"></span>
     <div class='mx-auto my-5'style='height:300px'id="graph1"></div>
+    <span class="border"></span>
+    {% if ETFDict['excludedWeight'] > 0%}
+    <div class="card-body mx-auto">
+      <p> This graph depicts the price history of {{ETFDict['Ticker']}} over the last five years </p>
+    </div>
+    <span class="border"></span>
+    {% endif %}
   </div>
 
   <div class="card mx-5">
