@@ -88,7 +88,7 @@ def getETFDict(ticker):
     # print(len(ticker))
     ticker = ticker.strip()
     # print(len(ticker))
-    printer.pprint(fromdb)
+    # printer.pprint(fromdb)
     excludedWeight = 0
     ETFDict = {"Ticker":ticker}
     holdingsList = {}
