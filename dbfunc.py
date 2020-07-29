@@ -43,12 +43,15 @@ def createUser(user,pw):
 def cacheTiingoData(ticker, index, bigTicker):
     # ETFDict = {
     config = {}
-    config['api_key'] = "c33e0a5817786310d82f9671fb47eb986b6bb0ff"
+    config['api_key'] = "e6d87822c7f79c6478f784b5af320ac0c96beda7"
     try:
         headers = {
             'Content-Type': 'application/json'
             }
-        requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices" + config['api_key'], headers=headers).json()
+        requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices?token=" + config['api_key'], headers=headers).json()
+        print(requestResponse)
+        if requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
+            return False
     except:
         print("\nFailed api call\n")
         return False
@@ -106,7 +109,7 @@ def getETFDict(ticker):
     # dbid = db.ObjectId(fromdb['_id'])
     # print(len(ticker))
     tickerholder = ticker
-    ticker = ticker.strip()
+    ticker = ticker.strip().replace('\\','')
     # print(len(ticker))
     # printer.pprint(fromdb)
     excludedWeight = 0
@@ -126,7 +129,7 @@ def getETFDict(ticker):
         # printer.pprint(listler)
     x = 0
     for holding in fromdb['Holdings']:
-        hTicker = holding['Ticker'].strip()
+        hTicker = holding['Ticker'].strip().replace('\\','')
         filePath = ""
         if ticker == "PRN":
             filePath = f"static/csv/c{hTicker}.csv"
@@ -172,7 +175,7 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-# getETFDict("ACWV")
+getETFDict("AOR")
 # for tick in getETFNames():
 #     getETFDict(tick)
 # printer.pprint(getETFDict("SOXX"))
