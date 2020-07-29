@@ -19,7 +19,7 @@ def index():
 
 @app.route('/comparison')
 def comparison():
-    ETFDict = getETFDict("PSMB")
+    ETFDict = getETFDict("SOXX")
     tickers = getETFNames()
     return render_template("compTool.html",options=tickers,ETFDict = ETFDict)
 
@@ -61,12 +61,14 @@ def admin():
     #If not redirect to the regular homepage
     return
 
-@app.route('/getetf/<ticker>/',methods=["POST","GET"])
-def getetf(ticker):
-    ## Use a function from dbfunctions to get etf data
-    ##render etf template
-    return "darn"
-
+@app.route('/getetfdata',methods=["POST","GET"])
+def getetf():
+    if request.method == "POST":
+        etf = request.get_json()
+        ETFDict = getETFDict(etf['ETF'])
+        print(etf)
+        return ETFDict
+    return ""
 
 if __name__  == "__main__":
     app.debug = True
