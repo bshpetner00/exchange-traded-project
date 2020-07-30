@@ -213,6 +213,7 @@ def getETFDict(ticker):
             if succeeble == 0:
                 ETFDict['error'] = "API key failure"
                 ETFDict['countErrors'] += 1
+                excludedWeight += holding['Weight']
                 continue
                 # return {"error":"API key failure"}
             if not succeeble:
@@ -257,7 +258,7 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-printer.pprint(getETFDict("AOR"))
+# printer.pprint(getETFDict("AOR"))
 # for tick in getETFNames():
 #     getETFDict(tick)
 # printer.pprint(getETFDict("SOXX"))
