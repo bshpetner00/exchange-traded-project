@@ -44,7 +44,7 @@ function getStartEndInds(data, start_year, end_year){
   // console.log(data);
   for (item in data){
     // console.log(data[item].date.getFullYear());
-    if (data[item].date.getFullYear() == start_year){
+    if (data[item].date.getFullYear() == start_year && startInd==0){
       startInd = item;
     } else if (data[item].date.getFullYear() == end_year){
       endInd = item;
