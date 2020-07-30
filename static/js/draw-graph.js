@@ -42,14 +42,33 @@ userETF.addEventListener("change", function() {
         let para0 = document.createElement("p");
         para0.innerHTML = holding;
         div1.appendChild(para0);
+
         let span0 = document.createElement("span");
         span0.classList.add('border');
+
         let div2 = document.createElement("div");
         div2.classList.add('col-2');
-        let para1 = document.createElement("p");
-        para1.classList.add('mx-auto');
-        para1.innerHTML = data['holdings'][holding]['Weight'].toFixed(3).toString() + "%";
-        div2.appendChild(para1);
+
+        let orgTool = document.createElement("div");
+        orgTool.classList.add('row')
+
+        let innerC1 = document.createElement("div");
+        innerC1.classList.add('col');
+        let wInput = document.createElement("input");
+        wInput.classList.add('form-control w-100');
+        wInput.value = data['holdings'][holding]['Weight'].toFixed(3).toString();
+        orgTool.appendChild(innerC1);
+
+        let innerC2 = document.createElement("div");
+        innerC2.classList.add("col-1");
+        innerC2.innerHTML = "<p>%</p>";
+        orgTool.appendChild(innerC2);
+
+
+        // let para1 = document.createElement("p");
+        // para1.classList.add('mx-auto');
+        // para1.innerHTML = data['holdings'][holding]['Weight'].toFixed(3).toString() + "%";
+        div2.appendChild(orgTool);
         div0.appendChild(div1);
         div0.appendChild(span0);
         div0.appendChild(div2);
