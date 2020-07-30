@@ -58,8 +58,11 @@ function getStartEndInds(data, start_year, end_year){
 function updateStartEnd(){
   var startPick = document.getElementById('startPick');
   var endPick = document.getElementById('endPick');
-  if (startPick.value == '' || endPick.value == ''){
-    return "";
+  if (startPick.value == ''){
+    startPick.value = '2015';
+    // return "";
+  } else if (endPick.value == ''){
+    endPick.value = '2020';
   }
   if (startPick.value > endPick.value){
     var temp = startPick;
