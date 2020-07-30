@@ -21,7 +21,7 @@ userETF.addEventListener("change", function() {
 	.then(data => {
 	    console.log(data);
 	    converted = data;
-	    if ("error" in data){
+	    if ('error' in data){
 		alert("This ETF either has too many holdings or our API key failed :(, choose another por favor")
 	    }
 	    clear_graphs();
