@@ -8,6 +8,12 @@ html {
   scroll-behavior: smooth;
 }
 
+.boxshadow {
+	-webkit-box-shadow: 5px 10px 10px 2px rgba(0,0,0,0.75);
+	-moz-box-shadow: 5px 10px 10px 2px rgba(0,0,0,0.75);
+	box-shadow: 5px 10px 10px 2px rgba(0,0,0,0.75);	
+}
+
 
 /*@font-face {
 	font-family: 'Futura Std';
