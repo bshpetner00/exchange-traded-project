@@ -24,9 +24,8 @@ userETF.addEventListener("change", function() {
 	    if ('error' in data){
 		alert("This ETF either has too many holdings or our API key failed :(, so the holdings graph may not render")
 	    }
-	    clear_graphs();
-	    draw_graph(data["Ticker"] + ".csv", '2015', '2020')
-	    draw_compiled_graph(compileETF(data), '2015', '2020');
+	    updateStartEnd();
+      document.getElementById('doubleTitle').innerHTML = data['Ticker'] + " data with graph of its pieces from the past 5 years";
 	    document.getElementById("title0").innerHTML = "Currently Displaying " + data["Ticker"] + " data from past 5 years";
 	    document.getElementById("title1").innerHTML = "Displaying graph of " + data["Ticker"] + " made up of its parts";
 	    document.getElementById("label0").innerHTML = "This graph depicts the price history of " + data["Ticker"] + " over the past 5 years";
