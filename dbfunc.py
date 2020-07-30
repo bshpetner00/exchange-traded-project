@@ -17,7 +17,7 @@ keyIndex = 0
 tries = 0
 prev = ""
 
-api_keys = ["4189e34dde4f36369ad0b451f844f9d1c46c69bf","e8a11e5ca8e3a9222efb84ccff6d64d488118ba0","e2cf710e49c6eba175bde3a841ec74d642046d2f"]
+api_keys = ["3842047dbcc720d06008d60033983ea6854f04f6", "23713b4424ab9ee4fa383c683064611d9f2bc8bf", "8b73bcb9d587e0b09db185acca5ddf4779a7d7ea", "69eaa8f3a7e0010ab2e326ead8f0314dc5820408"]
 
 
 mongolink = "mongodb+srv://{}:{}@stockler.7bkls.mongodb.net/BKA?retryWrites=true&w=majority".format(username,password)
@@ -91,7 +91,7 @@ def cacheTiingoData(ticker, index, bigTicker, keyIndex, tries):
             }
         requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices?token=" + config['api_key'], headers=headers).json()
         # print(requestResponse)
-        if requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
+        if 'detail' in requestResponse and requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
             if tries < 3:
                 keyIndex +=1
                 tries+=1
@@ -117,7 +117,7 @@ def cacheTiingoData(ticker, index, bigTicker, keyIndex, tries):
             return 0
 
     tickerholder = bigTicker
-    ticker = ticker.strip()
+    ticker = ticker.strip().replace("\\",'')
     # fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
     # x = 0
     # print(ticker)
