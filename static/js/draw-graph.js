@@ -21,9 +21,12 @@ userETF.addEventListener("change", function() {
 	.then(data => {
 	    console.log(data);
 	    converted = data;
-	    if ('error' in data){
-		alert("This ETF either has too many holdings or our API key failed :(, so the holdings graph may not render")
-	    }
+	    if ('error' in data && data['error'] == 'Too many holdings'){
+		alert("This ETF either has too many holdings so the holdings graph may not render");
+    return;
+  } else if ('error' in data){
+    alert("API key failed so the holdings graph may not render");
+  }
 	    updateStartEnd();
       document.getElementById('doubleTitle').innerHTML = data['Ticker'] + " data with graph of its pieces from the past 5 years";
 	    document.getElementById("title0").innerHTML = "Currently Displaying " + data["Ticker"] + " data from past 5 years";
