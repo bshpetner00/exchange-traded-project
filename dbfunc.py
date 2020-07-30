@@ -1,21 +1,55 @@
 from pymongo import MongoClient
-import os
+import os, glob
 from decouple import config
 import bcrypt, csv, pprint, requests, json
 from tiingo import TiingoClient
 from os import path
 import pandas as pd
 
+printer = pprint.PrettyPrinter(width=200, compact=True)
+
+# printer.pprint(os.listdir("static/csv/"))
+
 username = config('user')
 password = config('pass')
 
-printer = pprint.PrettyPrinter(width=200, compact=True)
 
 mongolink = "mongodb+srv://{}:{}@stockler.7bkls.mongodb.net/BKA?retryWrites=true&w=majority".format(username,password)
 # -- Initialization section --
 client = MongoClient(mongolink)
 db = client['BKA']
 dbtool = db.ETFData
+
+
+def cleanGitBS():
+    allFiles = os.listdir("static/csv/")
+    for file in allFiles:
+        convertedFile = []
+        mustConvert = False
+        with open("static/csv/" + file) as csvbler:
+            readler = csv.reader(csvbler)
+            readable = list(readler)
+            for line in readable:
+                # print(line)
+                if len(line) > 0:
+                    if line[0] == "<<<<<<< HEAD":
+                        mustConvert = True
+                    elif line[0] == "=======":
+                        mustConvert = True
+                        break
+                    elif line[0] == 'date':
+                        #do nothing
+                        mustConvert = mustConvert
+                    else:
+                        convertedFile.append(line)
+        # printer.pprint(convertedFile)
+        with open("static/csv/" + file, 'w') as csvfixer:
+            fieldnames = ['date', 'value']
+            writer = csv.DictWriter(csvfixer, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in convertedFile:
+                writer.writerow({"date":row[0], 'value': row[1]})
+
 
 def authUser(user,pw):
     users = db.users
@@ -67,10 +101,6 @@ def cacheTiingoData(ticker, index, bigTicker):
 
     # If you don't have your API key as an environment variable,
     # pass it in via a configuration dictionary.
-<<<<<<< HEAD
-    config['api_key'] = "e6d87822c7f79c6478f784b5af320ac0c96beda7"
-=======
->>>>>>> 8523f25608fbd7bd2dfd486b6f22dd818e413e6c
 
     client = TiingoClient(config)
     checkIfWorked = False
@@ -125,6 +155,7 @@ def getETFDict(ticker):
     includedWeight = 0
     numberPoints = 0
     fp = ''
+    ETFDict['pFormatted'] = "False"
     if ticker == "PRN":
         fp = 'static/csv/cPRN.csv'
     else:
@@ -132,18 +163,16 @@ def getETFDict(ticker):
     with open(fp, newline='') as ratio:
         readler = csv.reader(ratio)
         listler = list(readler)
+        listler = [x for x in listler if x != []]
+        printer.pprint(listler)
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
     x = 0
     for holding in fromdb['Holdings']:
-<<<<<<< HEAD
-        hTicker = str(holding['Ticker']).strip()
-=======
         if hasNumbers(holding['Ticker']):
             excludedWeight += holding['Weight']
             continue
         hTicker = holding['Ticker'].strip().replace('\\','')
->>>>>>> 8523f25608fbd7bd2dfd486b6f22dd818e413e6c
         filePath = ""
         if ticker == "PRN":
             filePath = f"static/csv/c{hTicker}.csv"
@@ -157,22 +186,28 @@ def getETFDict(ticker):
                 excludedWeight+=holding['Weight']
             else:
                 includedWeight+=holding['Weight']
+                if holding['Weight'] > 1:
+                    ETFDict['pFormatted'] = "True"
                 holdingsList[holding['Ticker']] = {}
                 holdingsList[holding['Ticker']]['Weight'] = holding['Weight']
                 with open(filePath, newline='') as holdingFile:
                     readler = csv.reader(holdingFile)
-                    holdingsList[holding['Ticker']]['data'] = list(readler)
+                    templist = list(readler)
+                    holdingsList[holding['Ticker']]['data'] = [x for x in templist if x != []]
                     if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
                         numberPoints = len(holdingsList[holding['Ticker']]['data'])
         elif "noTiingo" in holding:
             excludedWeight += holding['Weight']
         else:
+            if holding['Weight'] > 1:
+                ETFDict['pFormatted'] = "True"
             includedWeight+=holding['Weight']
             holdingsList[holding['Ticker']] = {}
             holdingsList[holding['Ticker']]['Weight'] = holding['Weight']
             with open(filePath, newline='') as holdingFile:
                 readler = csv.reader(holdingFile)
-                holdingsList[holding['Ticker']]['data'] = list(readler)
+                templist = list(readler)
+                holdingsList[holding['Ticker']]['data'] = [x for x in templist if x != []]
                 if len(holdingsList[holding['Ticker']]['data']) > numberPoints:
                     numberPoints = len(holdingsList[holding['Ticker']]['data'])
         x+=1
@@ -189,11 +224,11 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-getETFDict("AOR")
+# getETFDict("AOR")
 # for tick in getETFNames():
 #     getETFDict(tick)
 # printer.pprint(getETFDict("SOXX"))
-
+# cleanGitBS()
 
 # allTickers = db.ETFData.distinct('Ticker')
 # for ticker in allTickers:
