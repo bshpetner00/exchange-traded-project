@@ -19,14 +19,40 @@
 
 <br><br><br>
 
-<div class="card mx-auto w-50">
-  <div class="card-body mx-auto">
-    <h5 class="card-title mx-auto">View ETF Data</h5>
-  <select id="pickETF"class="selectpicker" data-live-search="true" style="text-align:center;">
+<div class="card mx-auto w-75">
+  <div class="card-body mx-auto w-100">
+
+    <h5 class="text-center">Select an ETF and a time period </h5>
+    <div class='border my-3'></div>
+    <div class="form-inline">
+      <!-- <span> -->
+    <label for='pickETF'class="label label-default">ETF Ticker:</label>
+      <!-- </span> -->
+  <select id="pickETF" class="selectpicker mx-auto" data-live-search="true">
+    <option data-token="" value=""></option>
     {% for option in options %}
     <option data-tokens={{option}} value={{option}}>{{option}}</option>
     {% endfor %}
   </select>
+  <label for='startPick'class="label label-default">Start year:</label>
+  <select id='startPick'class="selectpicker mx-auto w-25" data-live-search="true" onchange="updateStartEnd()">
+    <option data-token="" value=""></option>
+    <option data-token="2015" value="2015">2015</option>
+    <option data-token="2015" value="2016">2016</option>
+    <option data-token="2015" value="2017">2017</option>
+    <option data-token="2015" value="2018">2018</option>
+    <option data-token="2015" value="2019">2019</option>
+  </select>
+  <label for='endPick' class="label label-default">End year:</label>
+  <select id='endPick'class="selectpicker mx-auto w-25" data-live-search="true" onchange="updateStartEnd()">
+    <option data-token="" value=""></option>
+    <option data-token="2015" value="2020">2020</option>
+    <option data-token="2015" value="2019">2019</option>
+    <option data-token="2015" value="2018">2018</option>
+    <option data-token="2015" value="2017">2017</option>
+    <option data-token="2015" value="2016">2016</option>
+  </select>
+  </div>
   </div>
 </div>
 
@@ -64,8 +90,18 @@
 </div>
 
 <div class="card mx-auto my-5 w-75">
-  <div class="card-body mx-auto">
-    <h5 id="holding" class="card-title mx-auto">List of holdings included for {{ETFDict['Ticker']}}</h5>
+  <div class="card-body mx-auto w-100">
+    <div class="row">
+      <div class='col-2 mx-5'>
+      <button class="btn btn-outline-success mx-auto" onclick="updateWeighting()"> Update Weighting </button>
+      </div>
+      <div class='col-6 mx-auto'>
+    <h5 id="holding" class="card-title ml-5">List of holdings included for {{ETFDict['Ticker']}}</h5>
+    </div>
+    <div class='col-2 mx-auto'>
+      <button class="btn btn-outline-danger mx-auto" onclick="setWeightsZero()"> Set all to zero </button>
+    </div>
+    </div>
   </div>
   <span class="border"></span>
   <ul id="listholdings" class="list-group">
@@ -77,23 +113,29 @@
         </div>
         <span class="border"></span>
         <div class="col-2">
-          <p class="mx-auto">  {{'%.3f'%(ETFDict['holdings'][holding]['Weight'])}}%</p>
+          <div class='row'>
+            <div class="col">
+              <input id="w-{{holding}}"type='text' class="form-control w-100" value="{{'%.3f'%(ETFDict['holdings'][holding]['Weight'])}}"></input>
+            </div>
+            <div class="col-1">
+              <p>%</p>
+            </div>
+          </div>
         </div>
       </div>
     </li>
     {% endfor %}
 </ul>
 </div>
-
+<script src="static/js/comp.js"></script>
 <script src="static/js/draw-graph.js"></script>
+
 <script>
-
-
 // var ratiler = draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
-draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
+draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015', '2020');
 // console.log(ratiler);
-var converted = {{ETFDict | safe}}
-console.log(converted)
-compileETF(converted)
+var converted = {{ETFDict | safe}};
+console.log(converted);
+compileETF(converted,'2015', '2020');
 </script>
 {% endblock %}

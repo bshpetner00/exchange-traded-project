@@ -106,9 +106,9 @@ def cacheTiingoData(ticker, index, bigTicker):
     checkIfWorked = False
     try:
         beeper = client.get_ticker_price(ticker,fmt='json', frequency='weekly',startDate='2015-01-01', endDate='2020-01-01')
-        print('\n')
-        printer.pprint(beeper)
-        print('\n')
+        # print('\n')
+        # printer.pprint(beeper)
+        # print('\n')
         checkIfWorked = True
     except:
         checkIfWorked = False
@@ -164,7 +164,7 @@ def getETFDict(ticker):
         readler = csv.reader(ratio)
         listler = list(readler)
         listler = [x for x in listler if x != []]
-        printer.pprint(listler)
+        # printer.pprint(listler)
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
     x = 0

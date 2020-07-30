@@ -43,8 +43,8 @@ body {
   	background: linear-gradient(to right, #03001e, #7303c0, #ec38bc, #fdeff9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	position: fixed;
 	width: 100%;
-	padding: 10px;
-	border-bottom: 2px solid #fffff0;
+	padding: 12px;
+	/* border-bottom: 2px solid #fffff0; */
 	-webkit-box-shadow: 9px 9px 8px 1px rgba(0,0,0,0.40);
 	-moz-box-shadow: 9px 9px 8px 1px rgba(0,0,0,0.40);
 	box-shadow: 9px 9px 8px 1px rgba(0,0,0,0.40);

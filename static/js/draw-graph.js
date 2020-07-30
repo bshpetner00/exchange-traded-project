@@ -20,9 +20,10 @@ userETF.addEventListener("change", function() {
     }).then(res => res.json())
     .then(data => {
       console.log(data);
+      converted = data;
       clear_graphs();
-      draw_graph(data["Ticker"] + ".csv", '2015-01-02', '2020-01-03')
-      compileETF(data)
+      draw_graph(data["Ticker"] + ".csv", '2015', '2020')
+      compileETF(data, '2015', '2020');
       document.getElementById("title0").innerHTML = "Currently Displaying " + data["Ticker"] + " data from past 5 years";
       document.getElementById("title1").innerHTML = "Displaying graph of " + data["Ticker"] + " made up of its parts";
       document.getElementById("label0").innerHTML = "This graph depicts the price history of " + data["Ticker"] + " over the past 5 years";
@@ -42,14 +43,35 @@ userETF.addEventListener("change", function() {
         let para0 = document.createElement("p");
         para0.innerHTML = holding;
         div1.appendChild(para0);
+
         let span0 = document.createElement("span");
         span0.classList.add('border');
+
         let div2 = document.createElement("div");
         div2.classList.add('col-2');
-        let para1 = document.createElement("p");
-        para1.classList.add('mx-auto');
-        para1.innerHTML = data['holdings'][holding]['Weight'].toFixed(3).toString() + "%";
-        div2.appendChild(para1);
+
+        let orgTool = document.createElement("div");
+        orgTool.classList.add('row')
+
+        let innerC1 = document.createElement("div");
+        innerC1.classList.add('col');
+        let wInput = document.createElement("input");
+        wInput.classList.add('form-control');
+        wInput.classList.add('w-100');
+        wInput.value = data['holdings'][holding]['Weight'].toFixed(3).toString();
+        innerC1.appendChild(wInput);
+        orgTool.appendChild(innerC1);
+
+        let innerC2 = document.createElement("div");
+        innerC2.classList.add("col-1");
+        innerC2.innerHTML = "<p>%</p>";
+        orgTool.appendChild(innerC2);
+
+
+        // let para1 = document.createElement("p");
+        // para1.classList.add('mx-auto');
+        // para1.innerHTML = data['holdings'][holding]['Weight'].toFixed(3).toString() + "%";
+        div2.appendChild(orgTool);
         div0.appendChild(div1);
         div0.appendChild(span0);
         div0.appendChild(div2);
@@ -57,11 +79,12 @@ userETF.addEventListener("change", function() {
         listHoldings.appendChild(r);
       }
 
+
       //window.location = "/" + data.redirect;
     })
 })
 
-function compileETF(etfDict) {
+function compileETF(etfDict, starter, ender) {
   var ratio = parseFloat(etfDict['startVal']);
   var holdings = etfDict['holdings'];
   var excludedWeight = etfDict['excludedWeight'];
@@ -132,20 +155,24 @@ function compileETF(etfDict) {
     x++;
   }
   // console.log(result);
-  draw_compiled_graph(result, 10, 10);
+  draw_compiled_graph(result, starter, ender);
 }
 
 
 
 function draw_compiled_graph(data, year_start, year_end) {
-    // set the dimensions and margins of the graph
-
-    console.log(data);
-    var margin = {
-	top: 10,
-	right: 30,
-	bottom: 30,
-	left: 30
+  // set the dimensions and margins of the graph
+  // console.log(getStartEndInds(data, year_start, year_end))
+  var inds = getStartEndInds(data, year_start, year_end);
+  // console.log(data);
+  // console.log(Object.entries(data).slice(inds.start,inds.end));
+  data = data.slice(inds.start,inds.end);
+  // console.log(data)
+  var margin = {
+      top: 10,
+      right: 30,
+      bottom: 30,
+      left: 30
     },
 	width = 500 - margin.left - margin.right,
 	height = 300 - margin.top - margin.bottom;
@@ -329,7 +356,11 @@ function draw_graph(dataset, year_start, year_end) {
       data = data.filter(function(cValue){
         return cValue.date != null;
       });
-      console.log(data);
+      var inds = getStartEndInds(data, year_start, year_end);
+      // console.log(data);
+      // console.log(Object.entries(data).slice(inds.start,inds.end));
+      data = data.slice(inds.start,inds.end);
+      // console.log(data);
       // Add X axis --> it is a date format
       var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) {
