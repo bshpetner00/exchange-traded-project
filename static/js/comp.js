@@ -21,7 +21,7 @@ function updateWeighting(){
   }
   converted['excludedWeight'] = 100 - percentIn;
   converted['includedWeight'] = percentIn;
-  compileETF(converted);
+  updateStartEnd();
   document.getElementById("title1").innerHTML = "Displaying graph of " + converted["Ticker"] + " made up of its parts weighted by you";
   if (converted['excludedWeight'] != 0){
     document.getElementById("label1").innerHTML = "This balance depicts an ETF with your weighting and excludes " + converted['excludedWeight'].toFixed(3) + "% of it's price because the weightings don't add up to one";
