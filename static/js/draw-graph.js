@@ -22,7 +22,7 @@ userETF.addEventListener("change", function() {
 	    console.log(data);
 	    converted = data;
 	    if ('error' in data){
-		alert("This ETF either has too many holdings or our API key failed :(, choose another por favor")
+		alert("This ETF either has too many holdings or our API key failed :(, so the ")
 	    }
 	    clear_graphs();
 	    draw_graph(data["Ticker"] + ".csv", '2015', '2020')
@@ -294,10 +294,8 @@ function draw_compiled_graph(data, year_start, year_end) {
     function mousemove() {
 	// recover coordinate we need
 	var x0 = x.invert(d3.mouse(this)[0]);
-	console.log(x0)
 	var i = 0;
 	while (data[i].date < x0){
-	    //console.log(data[i].date);
 	    i+=1;
 	}
 	let weight = 15;
@@ -305,7 +303,6 @@ function draw_compiled_graph(data, year_start, year_end) {
 	    weight = -160;
 	}
 	selectedData = data[i]
-	console.log(selectedData);
 	focus
 	    .attr("cx", x(selectedData.date))
 	    .attr("cy", y(selectedData.value))
@@ -440,14 +437,11 @@ function draw_graph(dataset, year_start, year_end) {
 	       function mousemove() {
 		   // recover coordinate we need
 		   var x0 = x.invert(d3.mouse(this)[0]);
-		   console.log(x0)
 		   var i = 0;
 		   while (data[i].date < x0){
-		       //console.log(data[i].date);
 		       i+=1;
 		   }
 		   selectedData = data[i]
-		   console.log(selectedData);
 		   let weight = 15;
 		   if (i > 150){
 		       weight = -160;
