@@ -172,11 +172,11 @@ def getETFDict(ticker):
     # print(len(ticker))
     tickerholder = ticker
     ticker = ticker.strip().replace('\\','')
-    ETFDict['countErrors'] = 0
     # print(len(ticker))
     # printer.pprint(fromdb)
     excludedWeight = 0
     ETFDict = {"Ticker":ticker}
+    ETFDict['countErrors'] = 0
     holdingsList = {}
     includedWeight = 0
     numberPoints = 0
@@ -257,7 +257,7 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-# getETFDict("AOR")
+printer.pprint(getETFDict("AOR"))
 # for tick in getETFNames():
 #     getETFDict(tick)
 # printer.pprint(getETFDict("SOXX"))
