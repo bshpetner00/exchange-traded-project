@@ -92,25 +92,25 @@ def cacheTiingoData(ticker, index, bigTicker, keyIndex, tries):
         requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices?token=" + config['api_key'], headers=headers).json()
         # print(requestResponse)
         if requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
-            if tries < 2:
+            if tries < 3:
                 keyIndex +=1
                 tries+=1
                 # prev = ticker
                 return cacheTiingoData(ticker, index, bigTicker, keyIndex, tries)
                 # return 0;
-            elif tries==2:
+            elif tries==3:
                 # prev=''
                 # tries=0
                 return 0
     except:
         print("\nFailed api call\n")
-        if tries < 2:
+        if tries < 3:
             keyIndex +=1
             tries+=1
             # prev = ticker
             return cacheTiingoData(ticker, index, bigTicker, keyIndex, tries)
                 # return 0;
-        elif tries==2:
+        elif tries==3:
             # prev=''
             # tries=0
             return 0
