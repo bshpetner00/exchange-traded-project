@@ -13,6 +13,12 @@ printer = pprint.PrettyPrinter(width=200, compact=True)
 username = config('user')
 password = config('pass')
 
+keyIndex = 0
+tries = 0
+prev = ""
+
+api_keys = ["e6d87822c7f79c6478f784b5af320ac0c96beda7", "dc9097b20844830087fbc1b6e6c0606c6500b077", "c33735801203bfad3c2be383e2a092aed3af97c3", "66aa1fbcd15f0d1adf3e21ae25382d198deaeea3"]
+
 
 mongolink = "mongodb+srv://{}:{}@stockler.7bkls.mongodb.net/BKA?retryWrites=true&w=majority".format(username,password)
 # -- Initialization section --
@@ -74,10 +80,11 @@ def createUser(user,pw):
         users.insert_one({"user":user,"pw":hashed})
         return "Made user"
 
-def cacheTiingoData(ticker, index, bigTicker):
+def cacheTiingoData(ticker, index, bigTicker, keyIndex, tries):
     # ETFDict = {
     config = {}
-    config['api_key'] = "e6d87822c7f79c6478f784b5af320ac0c96beda7"
+    config['api_key'] = api_keys[keyIndex]
+    print(config['api_key'])
     try:
         headers = {
             'Content-Type': 'application/json'
@@ -85,10 +92,28 @@ def cacheTiingoData(ticker, index, bigTicker):
         requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices?token=" + config['api_key'], headers=headers).json()
         # print(requestResponse)
         if requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
-            return 0;
+            if tries < 2:
+                keyIndex +=1
+                tries+=1
+                # prev = ticker
+                return cacheTiingoData(ticker, index, bigTicker, keyIndex, tries)
+                # return 0;
+            elif tries==2:
+                # prev=''
+                # tries=0
+                return 0
     except:
         print("\nFailed api call\n")
-        return 0;
+        if tries < 2:
+            keyIndex +=1
+            tries+=1
+            # prev = ticker
+            return cacheTiingoData(ticker, index, bigTicker, keyIndex, tries)
+                # return 0;
+        elif tries==2:
+            # prev=''
+            # tries=0
+            return 0
 
     tickerholder = bigTicker
     ticker = ticker.strip()
@@ -183,7 +208,7 @@ def getETFDict(ticker):
         else:
             filePath = f"static/csv/{hTicker}.csv"
         if not path.exists(filePath) and "noTiingo" not in holding:
-            succeeble = cacheTiingoData(hTicker, x, tickerholder)
+            succeeble = cacheTiingoData(hTicker, x, tickerholder, 0,0)
             if succeeble == 0:
                 return {"error":"API key failure"}
             if not succeeble:
@@ -228,7 +253,7 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-# getETFDict("AOR")
+getETFDict("AOR")
 # for tick in getETFNames():
 #     getETFDict(tick)
 # printer.pprint(getETFDict("SOXX"))
