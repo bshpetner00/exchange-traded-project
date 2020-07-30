@@ -85,10 +85,10 @@ def cacheTiingoData(ticker, index, bigTicker):
         requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/SOXX/prices?token=" + config['api_key'], headers=headers).json()
         # print(requestResponse)
         if requestResponse['detail']== "Error: You have run over your hourly request allocation. Please upgrade at https://api.tiingo.com/pricing to have your limits increased.":
-            return False
+            return 0;
     except:
         print("\nFailed api call\n")
-        return False
+        return 0;
 
     tickerholder = bigTicker
     ticker = ticker.strip()
@@ -168,6 +168,8 @@ def getETFDict(ticker):
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
     x = 0
+    if len(fromdb['Holdings']) > 200:
+        return {"error":"Too many holdings"}
     for holding in fromdb['Holdings']:
         if hasNumbers(holding['Ticker']):
             excludedWeight += holding['Weight']
@@ -182,6 +184,8 @@ def getETFDict(ticker):
             filePath = f"static/csv/{hTicker}.csv"
         if not path.exists(filePath) and "noTiingo" not in holding:
             succeeble = cacheTiingoData(hTicker, x, tickerholder)
+            if succeeble == 0:
+                return {"error":"API key failure"}
             if not succeeble:
                 excludedWeight+=holding['Weight']
             else:
