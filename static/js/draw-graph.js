@@ -87,7 +87,7 @@ userETF.addEventListener("change", function() {
 	})
 })
 
-function compileETF(etfDict, starter, ender) {
+function compileETF(etfDict) {
     var ratio = parseFloat(etfDict['startVal']);
     var holdings = etfDict['holdings'];
     var excludedWeight = etfDict['excludedWeight'];
@@ -158,7 +158,7 @@ function compileETF(etfDict, starter, ender) {
 	x++;
     }
     // console.log(result);
-    draw_compiled_graph(result, starter, ender);
+    return result;
 }
 
 
@@ -198,7 +198,7 @@ function draw_compiled_graph(data, year_start, year_end) {
     svg.append("g")
 	.attr("transform", "translate(0," + height + ")")
 	.call(d3.axisBottom(x));
-    
+
 
     // Add Y axis
     var y = d3.scaleLinear()
@@ -224,7 +224,7 @@ function draw_compiled_graph(data, year_start, year_end) {
     svg.append("path")
 	.datum(data)
 	.attr("fill", "none")
-	.attr("stroke", "steelblue")
+	.attr("stroke", "red")
 	.attr("stroke-width", 1.5)
 	.attr("d", d3.line()
 	      .x(function(d) {
@@ -249,7 +249,7 @@ function draw_compiled_graph(data, year_start, year_end) {
 		   .text(x.invert( + ":" + d.value)
 		   return
 		   })
-		   
+
 		   .on("mouseout",function(d){
 		   d3.select("#tooltip")
 		   .style("visibility","hidden")
