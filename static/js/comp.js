@@ -7,8 +7,11 @@ function updateWeighting(){
   for (item in listed){
     console.log(keylist[item]);
     if (! isNaN(item)){
-      converted['holdings'][keylist[item]]['Weight'] = listed[item].value;
-      percentIn += listed[item].value;
+      if (listed[item].value && converted['holdings'][keylist[item]]){
+        converted['holdings'][keylist[item]]['Weight'] = listed[item].value;
+        percentIn += parseFloat(listed[item].value);
+        console.log(listed[item]);
+      }
     }
   }
   console.log(converted);
@@ -24,5 +27,12 @@ function updateWeighting(){
     document.getElementById("label1").innerHTML = "This balance depicts an ETF with your weighting and excludes " + converted['excludedWeight'].toFixed(3) + "% of it's price because the weightings don't add up to one";
   } else {
     document.getElementById("label1").innerHTML = "This balance depicts an ETF with your weighting as shown below";
+  }
+}
+
+function setWeightsZero(){
+  var listed = document.getElementsByClassName("form-control w-100");
+  for (item in listed){
+    listed[item].value = 0;
   }
 }

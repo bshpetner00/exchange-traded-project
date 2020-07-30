@@ -20,6 +20,7 @@ userETF.addEventListener("change", function() {
     }).then(res => res.json())
     .then(data => {
       console.log(data);
+      converted = data;
       clear_graphs();
       draw_graph(data["Ticker"] + ".csv", '2015-01-02', '2020-01-03')
       compileETF(data)
@@ -77,17 +78,6 @@ userETF.addEventListener("change", function() {
         r.appendChild(div0);
         listHoldings.appendChild(r);
       }
-      let finalItem = document.createElement('li');
-      finalItem.classList.add('list-group-item');
-      finalItem.classList.add('mx-auto');
-      let finalButton = document.createElement('button');
-      finalButton.classList.add('btn');
-      finalButton.classList.add('btn-outline-primary');
-      finalButton.classList.add('mx-auto');
-      finalButton.onclick = 'updateWeighting()';
-      finalButton.innerHTML = ' Update Weighting ';
-      finalItem.appendChild(finalButton);
-      listHoldings.appendChild(finalItem);
 
 
       //window.location = "/" + data.redirect;

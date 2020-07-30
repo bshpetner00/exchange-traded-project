@@ -65,8 +65,18 @@
 </div>
 
 <div class="card mx-auto my-5 w-75">
-  <div class="card-body mx-auto">
-    <h5 id="holding" class="card-title mx-auto">List of holdings included for {{ETFDict['Ticker']}}</h5>
+  <div class="card-body mx-auto w-100">
+    <div class="row">
+      <div class='col-2 mx-5'>
+      <button class="btn btn-outline-success mx-auto" onclick="updateWeighting()"> Update Weighting </button>
+      </div>
+      <div class='col-6 mx-auto'>
+    <h5 id="holding" class="card-title ml-5">List of holdings included for {{ETFDict['Ticker']}}</h5>
+    </div>
+    <div class='col-2 mx-auto'>
+      <button class="btn btn-outline-danger mx-auto" onclick="setWeightsZero()"> Set all to zero </button>
+    </div>
+    </div>
   </div>
   <span class="border"></span>
   <ul id="listholdings" class="list-group">
@@ -90,9 +100,6 @@
       </div>
     </li>
     {% endfor %}
-    <li class="list-group-item mx-auto">
-      <button class="btn btn-outline-primary mx-auto" onclick="updateWeighting()"> Update Weighting </button>
-    </li>
 </ul>
 </div>
 <script src="static/js/comp.js"></script>
