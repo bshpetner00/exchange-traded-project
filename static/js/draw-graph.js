@@ -22,7 +22,7 @@ userETF.addEventListener("change", function() {
 	    console.log(data);
 	    converted = data;
 	    if ('error' in data){
-		alert("This ETF either has too many holdings or our API key failed :(, so the ")
+		alert("This ETF either has too many holdings or our API key failed :(, so the holdings graph may not render")
 	    }
 	    clear_graphs();
 	    draw_graph(data["Ticker"] + ".csv", '2015', '2020')
@@ -472,5 +472,10 @@ function clear_graphs() {
     while (graph2.firstChild) {
 	graph2.removeChild(graph2.lastChild);
     }
+    const graph3 = document.getElementById("graph-container");
+    while (graph3.firstChild) {
+	graph3.removeChild(graph3.lastChild);
+    }
+
 
 }
