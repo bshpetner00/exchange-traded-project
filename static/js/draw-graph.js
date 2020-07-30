@@ -26,7 +26,7 @@ userETF.addEventListener("change", function() {
 	    }
 	    clear_graphs();
 	    draw_graph(data["Ticker"] + ".csv", '2015', '2020')
-	    compileETF(data, '2015', '2020');
+	    draw_compiled_graph(compileETF(data), '2015', '2020');
 	    document.getElementById("title0").innerHTML = "Currently Displaying " + data["Ticker"] + " data from past 5 years";
 	    document.getElementById("title1").innerHTML = "Displaying graph of " + data["Ticker"] + " made up of its parts";
 	    document.getElementById("label0").innerHTML = "This graph depicts the price history of " + data["Ticker"] + " over the past 5 years";
