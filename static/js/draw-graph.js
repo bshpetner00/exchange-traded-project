@@ -297,6 +297,10 @@ function draw_compiled_graph(data, year_start, year_end) {
 	    //console.log(data[i].date);
 	    i+=1;
 	}
+	let weight = 15;
+	if (i > 150){
+	    weight = -160;
+	}
 	selectedData = data[i]
 	console.log(selectedData);
 	focus
@@ -304,7 +308,7 @@ function draw_compiled_graph(data, year_start, year_end) {
 	    .attr("cy", y(selectedData.value))
 	focusText
 	    .html(String(selectedData.date).slice(0,15) + " : " + selectedData.value.toFixed(2))
-	    .attr("x", x(selectedData.date)+15)
+	    .attr("x", x(selectedData.date)+weight)
 	    .attr("y", y(selectedData.value))
     }
     function mouseout() {
@@ -441,12 +445,16 @@ function draw_graph(dataset, year_start, year_end) {
 	    }
 	    selectedData = data[i]
 	    console.log(selectedData);
+	    let weight = 15;
+	    if (i > 150){
+		weight = -160;
+	    }
 	    focus
 		.attr("cx", x(selectedData.date))
 		.attr("cy", y(selectedData.value))
 	    focusText
 		.html(String(selectedData.date).slice(0,15) + " : " + parseFloat(selectedData.value).toFixed(2))
-		.attr("x", x(selectedData.date)+15)
+		.attr("x", x(selectedData.date)+weight)
 		.attr("y", y(selectedData.value))
 	}
 	function mouseout() {
