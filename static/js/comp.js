@@ -73,5 +73,7 @@ function updateStartEnd(){
   // console.log(endPick.value);
   clear_graphs();
   draw_graph(converted['Ticker'] + ".csv",startPick.value, endPick.value);
-  compileETF(converted,startPick.value, endPick.value);
+  draw_compiled_graph(compileETF(converted),startPick.value, endPick.value);
+  doubleGraph(compileETF(converted),startPick.value, endPick.value);
+
 }
