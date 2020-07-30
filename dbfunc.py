@@ -96,6 +96,7 @@ def cacheTiingoData(ticker, index, bigTicker, keyIndex, tries):
                 keyIndex +=1
                 tries+=1
                 # prev = ticker
+                print("API key expired")
                 return cacheTiingoData(ticker, index, bigTicker, keyIndex, tries)
                 # return 0;
             elif tries==3:
@@ -196,7 +197,7 @@ def getETFDict(ticker):
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
     x = 0
-    if len(fromdb['Holdings']) > 250:
+    if len(fromdb['Holdings']) > 500:
         return {"error":"Too many holdings"}
     for holding in fromdb['Holdings']:
         if hasNumbers(holding['Ticker']):
