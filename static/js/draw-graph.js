@@ -55,8 +55,10 @@ userETF.addEventListener("change", function() {
         let innerC1 = document.createElement("div");
         innerC1.classList.add('col');
         let wInput = document.createElement("input");
-        wInput.classList.add('form-control w-100');
+        wInput.classList.add('form-control');
+        wInput.classList.add('w-100');
         wInput.value = data['holdings'][holding]['Weight'].toFixed(3).toString();
+        innerC1.appendChild(wInput);
         orgTool.appendChild(innerC1);
 
         let innerC2 = document.createElement("div");
@@ -75,6 +77,18 @@ userETF.addEventListener("change", function() {
         r.appendChild(div0);
         listHoldings.appendChild(r);
       }
+      let finalItem = document.createElement('li');
+      finalItem.classList.add('list-group-item');
+      finalItem.classList.add('mx-auto');
+      let finalButton = document.createElement('button');
+      finalButton.classList.add('btn');
+      finalButton.classList.add('btn-outline-primary');
+      finalButton.classList.add('mx-auto');
+      finalButton.onclick = 'updateWeighting()';
+      finalButton.innerHTML = ' Update Weighting ';
+      finalItem.appendChild(finalButton);
+      listHoldings.appendChild(finalItem);
+
 
       //window.location = "/" + data.redirect;
     })
