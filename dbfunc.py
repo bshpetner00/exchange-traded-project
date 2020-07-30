@@ -17,7 +17,7 @@ keyIndex = 0
 tries = 0
 prev = ""
 
-api_keys = ["e6d87822c7f79c6478f784b5af320ac0c96beda7", "dc9097b20844830087fbc1b6e6c0606c6500b077", "c33735801203bfad3c2be383e2a092aed3af97c3", "66aa1fbcd15f0d1adf3e21ae25382d198deaeea3"]
+api_keys = ["aea58f13ade9658720cba258c473411ee11a235e","4264d00ea7fe4e0f017dd007e846ffe434fe85b1","06b1ae41acd41fe13585f8d303cf6472d6a53efe","e9570706622491e97dde38be46304acc6db1a1b7","e2cf710e49c6eba175bde3a841ec74d642046d2f"]
 
 
 mongolink = "mongodb+srv://{}:{}@stockler.7bkls.mongodb.net/BKA?retryWrites=true&w=majority".format(username,password)
@@ -164,7 +164,9 @@ def cacheTiingoData(ticker, index, bigTicker, keyIndex, tries):
         return False
 
 def hasNumbers(inputString):
-     return any(char.isdigit() for char in inputString)
+    if not isinstance(inputString,str):
+        return True
+    return any(char.isdigit() for char in inputString)
 
 def getETFDict(ticker):
     fromdb = list(db.ETFData.find({'Ticker':ticker}))[0]
