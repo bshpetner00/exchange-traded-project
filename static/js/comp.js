@@ -36,3 +36,39 @@ function setWeightsZero(){
     listed[item].value = 0;
   }
 }
+
+function getStartEndInds(data, start_year, end_year){
+  var startInd = 0;
+  var endInd = 0;
+  var result = {};
+  // console.log(data);
+  for (item in data){
+    // console.log(data[item].date.getFullYear());
+    if (data[item].date.getFullYear() == start_year){
+      startInd = item;
+    } else if (data[item].date.getFullYear() == end_year){
+      endInd = item;
+    }
+  }
+  result = {start:startInd,end:endInd};
+  return result;
+}
+
+
+function updateStartEnd(){
+  var startPick = document.getElementById('startPick');
+  var endPick = document.getElementById('endPick');
+  if (startPick.value == '' || endPick.value == ''){
+    return "";
+  }
+  if (startPick.value > endPick.value){
+    var temp = startPick;
+    startPick = endPick;
+    endPick = temp;
+  }
+  // console.log(startPick.value);
+  // console.log(endPick.value);
+  clear_graphs();
+  draw_graph(converted['Ticker'] + ".csv",startPick.value, endPick.value);
+  compileETF(converted,startPick.value, endPick.value);
+}

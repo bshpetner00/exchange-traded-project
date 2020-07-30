@@ -22,8 +22,8 @@ userETF.addEventListener("change", function() {
       console.log(data);
       converted = data;
       clear_graphs();
-      draw_graph(data["Ticker"] + ".csv", '2015-01-02', '2020-01-03')
-      compileETF(data)
+      draw_graph(data["Ticker"] + ".csv", '2015', '2020')
+      compileETF(data, '2015', '2020');
       document.getElementById("title0").innerHTML = "Currently Displaying " + data["Ticker"] + " data from past 5 years";
       document.getElementById("title1").innerHTML = "Displaying graph of " + data["Ticker"] + " made up of its parts";
       document.getElementById("label0").innerHTML = "This graph depicts the price history of " + data["Ticker"] + " over the past 5 years";
@@ -84,7 +84,7 @@ userETF.addEventListener("change", function() {
     })
 })
 
-function compileETF(etfDict) {
+function compileETF(etfDict, starter, ender) {
   var ratio = parseFloat(etfDict['startVal']);
   var holdings = etfDict['holdings'];
   var excludedWeight = etfDict['excludedWeight'];
@@ -155,15 +155,19 @@ function compileETF(etfDict) {
     x++;
   }
   // console.log(result);
-  draw_compiled_graph(result, 10, 10);
+  draw_compiled_graph(result, starter, ender);
 }
 
 
 
 function draw_compiled_graph(data, year_start, year_end) {
   // set the dimensions and margins of the graph
-
-  console.log(data);
+  // console.log(getStartEndInds(data, year_start, year_end))
+  var inds = getStartEndInds(data, year_start, year_end);
+  // console.log(data);
+  // console.log(Object.entries(data).slice(inds.start,inds.end));
+  data = data.slice(inds.start,inds.end);
+  // console.log(data)
   var margin = {
       top: 10,
       right: 30,
@@ -261,7 +265,11 @@ function draw_graph(dataset, year_start, year_end) {
       data = data.filter(function(cValue){
         return cValue.date != null;
       });
-      console.log(data);
+      var inds = getStartEndInds(data, year_start, year_end);
+      // console.log(data);
+      // console.log(Object.entries(data).slice(inds.start,inds.end));
+      data = data.slice(inds.start,inds.end);
+      // console.log(data);
       // Add X axis --> it is a date format
       var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) {

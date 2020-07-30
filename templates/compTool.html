@@ -19,15 +19,40 @@
 
 <br><br><br>
 
-<div class="card mx-auto w-50">
-  <div class="card-body mx-auto">
-    <h5 class="card-title mx-auto">View ETF Data</h5>
-  <select id="pickETF"class="selectpicker" data-live-search="true" style="text-align:center;">
+<div class="card mx-auto w-75">
+  <div class="card-body mx-auto w-100">
+
+    <h5 class="text-center">Select an ETF and a time period </h5>
+    <div class='border my-3'></div>
+    <div class="form-inline">
+      <!-- <span> -->
+    <label for='pickETF'class="label label-default">ETF Ticker:</label>
+      <!-- </span> -->
+  <select id="pickETF" class="selectpicker mx-auto" data-live-search="true">
     <option data-token="" value=""></option>
     {% for option in options %}
     <option data-tokens={{option}} value={{option}}>{{option}}</option>
     {% endfor %}
   </select>
+  <label for='startPick'class="label label-default">Start year:</label>
+  <select id='startPick'class="selectpicker mx-auto w-25" data-live-search="true" onchange="updateStartEnd()">
+    <option data-token="" value=""></option>
+    <option data-token="2015" value="2015">2015</option>
+    <option data-token="2015" value="2016">2016</option>
+    <option data-token="2015" value="2017">2017</option>
+    <option data-token="2015" value="2018">2018</option>
+    <option data-token="2015" value="2019">2019</option>
+  </select>
+  <label for='endPick' class="label label-default">End year:</label>
+  <select id='endPick'class="selectpicker mx-auto w-25" data-live-search="true" onchange="updateStartEnd()">
+    <option data-token="" value=""></option>
+    <option data-token="2015" value="2020">2020</option>
+    <option data-token="2015" value="2019">2019</option>
+    <option data-token="2015" value="2018">2018</option>
+    <option data-token="2015" value="2017">2017</option>
+    <option data-token="2015" value="2016">2016</option>
+  </select>
+  </div>
   </div>
 </div>
 
@@ -107,10 +132,10 @@
 
 <script>
 // var ratiler = draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
-draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015-01-02', '2020-01-03')
+draw_graph("{{ETFDict['Ticker']}}" + ".csv",'2015', '2020');
 // console.log(ratiler);
-var converted = {{ETFDict | safe}}
-console.log(converted)
-compileETF(converted)
+var converted = {{ETFDict | safe}};
+console.log(converted);
+compileETF(converted,'2015', '2020');
 </script>
 {% endblock %}
