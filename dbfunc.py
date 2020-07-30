@@ -172,6 +172,7 @@ def getETFDict(ticker):
     # print(len(ticker))
     tickerholder = ticker
     ticker = ticker.strip().replace('\\','')
+    ETFDict['countErrors'] = 0
     # print(len(ticker))
     # printer.pprint(fromdb)
     excludedWeight = 0
@@ -193,7 +194,7 @@ def getETFDict(ticker):
         ETFDict['startVal'] = listler[1][1]
         # printer.pprint(listler)
     x = 0
-    if len(fromdb['Holdings']) > 200:
+    if len(fromdb['Holdings']) > 250:
         return {"error":"Too many holdings"}
     for holding in fromdb['Holdings']:
         if hasNumbers(holding['Ticker']):
@@ -210,7 +211,10 @@ def getETFDict(ticker):
         if not path.exists(filePath) and "noTiingo" not in holding:
             succeeble = cacheTiingoData(hTicker, x, tickerholder, 0,0)
             if succeeble == 0:
-                return {"error":"API key failure"}
+                ETFDict['error'] = "API key failure"
+                ETFDict['countErrors'] += 1
+                continue
+                # return {"error":"API key failure"}
             if not succeeble:
                 excludedWeight+=holding['Weight']
             else:
@@ -253,7 +257,7 @@ def getETFNames():
     # print(allTickers)
     return allTickers
 
-getETFDict("AOR")
+# getETFDict("AOR")
 # for tick in getETFNames():
 #     getETFDict(tick)
 # printer.pprint(getETFDict("SOXX"))
